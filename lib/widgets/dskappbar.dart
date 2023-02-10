@@ -1,6 +1,9 @@
 import 'package:dsk_docflow/models/UiConstant.dart';
+import 'package:dsk_docflow/pages/order_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 class DskAppBar extends StatelessWidget with PreferredSizeWidget {
   const DskAppBar({Key? key}) : super(key: key);
@@ -14,21 +17,20 @@ class DskAppBar extends StatelessWidget with PreferredSizeWidget {
       // Add AppBar here only
       backgroundColor: Colors.black,
       elevation: 0.0,
-      leading: Padding(
-          padding: EdgeInsets.only(left: 100),
-          child: Row(
-            children: [
-              TextButton(
-                  onPressed: () {},
-                  child: Text(
-                    "ЗАКАЗЫ",
-                    style: TextStyle(fontSize: 20, color: Colors.white),
-                  ))
-            ],
-          )),
+      actions: [
+        TextButton(
+            onPressed: () {
+              Get.to(OrderPage());
+            },
+            child: Text(
+              "ЗАКАЗЫ",
+              style: TextStyle(fontSize: 20, color: Colors.white),
+            ))
+      ],
+
       title: Text(
         UiConstant.companyName,
-        style: TextStyle(fontSize: 50),
+        style: TextStyle(fontSize: 30),
       ),
     );
   }

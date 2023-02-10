@@ -9,7 +9,17 @@ class OrderPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: DskAppBar(), // extendBodyBehindAppBar: true,
-        body: Container());
+      appBar: DskAppBar(), // extendBodyBehindAppBar: true,
+      body: Column(
+        children: [
+          SizedBox(
+            height: 50,
+          ),
+          Container(
+              width: 200,
+              child: ElevatedButton(onPressed: () {}, child: Text("Добавить"))),
+        ],
+      ),
+    );
   }
 }
