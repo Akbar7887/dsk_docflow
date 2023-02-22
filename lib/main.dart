@@ -2,6 +2,7 @@ import 'package:dsk_docflow/models/UiC.dart';
 import 'package:dsk_docflow/pages/department_page.dart';
 import 'package:dsk_docflow/pages/home.dart';
 import 'package:dsk_docflow/pages/order_page.dart';
+import 'package:dsk_docflow/pages/position_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
       getPages: [
         GetPage(name: '/', page: () => DepartmentPage()),
         GetPage(name: '/department', page: () => Home()),
+        GetPage(name: '/position', page: () => PositionPage()),
         GetPage(name: "/order", page: () => OrderPage())
         // GetPage(name: '/kompleksdetails', page: () => KompleksDetailesPage()),
       ],

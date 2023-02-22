@@ -1,6 +1,7 @@
 import 'package:dsk_docflow/models/UiC.dart';
 import 'package:dsk_docflow/pages/department_page.dart';
 import 'package:dsk_docflow/pages/order_page.dart';
+import 'package:dsk_docflow/pages/position_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -31,7 +32,9 @@ class DskAppBar extends StatelessWidget with PreferredSizeWidget {
                   "Заказы",
                   style: TextStyle(fontSize: 20, color: Colors.white),
                 ))),
-        SizedBox(width: 20,),
+        SizedBox(
+          width: 20,
+        ),
         Container(
             alignment: Alignment.center,
             child: PopupMenuButton<Menu>(
@@ -50,7 +53,18 @@ class DskAppBar extends StatelessWidget with PreferredSizeWidget {
                               Get.to(() => DepartmentPage());
                             },
                             child: Text(
-                              "ДЕПАРТАМЕНТЫ",
+                              "Департаменты",
+                              style: TextStyle(fontSize: 20),
+                            )),
+                      ),
+                      PopupMenuItem(
+                        child: TextButton(
+                            onPressed: () {
+                              // Get.offAll(OrderPage());
+                              Get.to(() => PositionPage());
+                            },
+                            child: Text(
+                              "Должности",
                               style: TextStyle(fontSize: 20),
                             )),
                       )
