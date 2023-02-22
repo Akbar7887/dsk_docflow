@@ -21,7 +21,7 @@ class DskAppBar extends StatelessWidget with PreferredSizeWidget {
       actions: [
         TextButton(
             onPressed: () {
-              Get.to(() =>OrderPage());
+              Get.to(() => OrderPage());
             },
             child: Text(
               "ЗАКАЗЫ",
@@ -29,8 +29,8 @@ class DskAppBar extends StatelessWidget with PreferredSizeWidget {
             )),
         TextButton(
             onPressed: () {
-              Get.offAll(OrderPage());
-              Get.to(() =>DepartmentPage());
+              // Get.offAll(OrderPage());
+              Get.to(() => DepartmentPage());
             },
             child: Text(
               "ДЕПАРТАМЕНТЫ",

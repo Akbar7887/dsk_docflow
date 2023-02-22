@@ -18,23 +18,19 @@ class DepartmentPage extends StatefulWidget {
 class _DepartmentPageState extends State<DepartmentPage> {
   Controller _controller = Get.put(Controller());
 
-  late List<Department> _departments;
+  List<Department> _departments = [];
   late DepartmentDataGridSource _departmentDataGridSource;
 
   @override
   void initState() {
-    _controller.fetchdepartment();
+    _departments = _controller.departments;
+    _departmentDataGridSource = DepartmentDataGridSource(_departments);
 
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_controller.departments!.isNotEmpty) {
-      _departmentDataGridSource =
-          DepartmentDataGridSource(_controller.departments!);
-    }
-
     return Scaffold(
         appBar: DskAppBar(), // extendBodyBehindAppBar: true,
         body: Padding(
@@ -98,7 +94,7 @@ class DepartmentDataGridSource extends DataGridSource {
 
   @override
   DataGridRowAdapter? buildRow(DataGridRow row) {
-    throw DataGridRowAdapter(
+    return DataGridRowAdapter(
         cells: row.getCells().map<Widget>((e) {
       return Container(
         child: Text(e.value.toString()),
