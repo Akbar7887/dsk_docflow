@@ -1,4 +1,5 @@
-import 'package:dsk_docflow/models/UiConstant.dart';
+import 'package:dsk_docflow/models/UiC.dart';
+import 'package:dsk_docflow/pages/department_page.dart';
 import 'package:dsk_docflow/pages/order_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -25,11 +26,19 @@ class DskAppBar extends StatelessWidget with PreferredSizeWidget {
             child: Text(
               "ЗАКАЗЫ",
               style: TextStyle(fontSize: 20, color: Colors.white),
+            )),
+        TextButton(
+            onPressed: () {
+              Get.to(DepartmentPage());
+            },
+            child: Text(
+              "ДЕПАРТАМЕНТЫ",
+              style: TextStyle(fontSize: 20, color: Colors.white),
             ))
       ],
 
       title: Text(
-        UiConstant.companyName,
+        UiC.companyName,
         style: TextStyle(fontSize: 30),
       ),
     );
