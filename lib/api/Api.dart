@@ -44,4 +44,19 @@ class Api{
       throw Exception("Error");
     }
   }
+
+  Future<bool> delete(String url, String id) async{
+    Uri uri = Uri.parse("${UiC.url}${url}").replace(queryParameters: {"id": id});
+
+    final response = await http.delete(uri, headers: header);
+
+    if (response.statusCode == 200
+        || response.statusCode == 201) {
+
+      return true;
+    } else {
+      throw Exception("Error");
+      return false;
+    }
+  }
 }

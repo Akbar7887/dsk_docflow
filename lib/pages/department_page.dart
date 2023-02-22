@@ -1,5 +1,6 @@
 import 'package:dsk_docflow/api/Api.dart';
 import 'package:dsk_docflow/controllers/Controller.dart';
+import 'package:dsk_docflow/models/UiC.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -43,111 +44,178 @@ class _DepartmentPageState extends State<DepartmentPage> {
               appBar: DskAppBar(), // extendBodyBehindAppBar: true,
               body: Padding(
                 padding: EdgeInsets.only(left: 50, right: 50),
-                child: ListView(
-                  children: [
-                    SizedBox(
-                      height: 50,
+                child: ListView(children: [
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    alignment: Alignment.center,
+                    child: Text(
+                      "Департаменты",
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontFamily: UiC.font,
+                          fontWeight: FontWeight.bold),
                     ),
-                    Container(
-                        alignment: Alignment.topLeft,
-                        child: ElevatedButton(
-                            onPressed: () {
-                              _department = null;
-                              showDialogMeneger();
-                            },
-                            child: Text("Добавить"))),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Expanded(
-                        child: Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: MediaQuery.of(context).size.height,
-                            child: Card(
-                                child: SfDataGridTheme(
-                              data: SfDataGridThemeData(
-                                headerColor: Colors.grey[700],
-                                rowHoverColor: Colors.grey,
-                                rowHoverTextStyle: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 15,
-                                ),
-                              ),
-                              child: SfDataGrid(
-                                  source: _departmentDataGridSource,
-                                  selectionMode: SelectionMode.single,
-                                  headerGridLinesVisibility:
-                                      GridLinesVisibility.vertical,
-                                  columnWidthMode: ColumnWidthMode.fill,
-                                  // allowFiltering: true,
-                                  allowSorting: true,
-                                  allowEditing: true,
-                                  onCellTap: (cell) {
-                                    if (cell.rowColumnIndex.rowIndex > -1) {
-                                      if (cell.rowColumnIndex.columnIndex ==
-                                          2) {
-                                        _department = _departments[
-                                            cell.rowColumnIndex.rowIndex - 1];
-                                        showDialogMeneger();
-                                      }
-                                      if (cell.rowColumnIndex.columnIndex ==
-                                          3) {}
-                                    }
-                                  },
-                                  columns: [
-                                    GridColumn(
-                                        columnName: 'id',
-                                        width: 100,
-                                        label: Center(
-                                          child: Text(
-                                            "№",
-                                            style: TextStyle(
-                                                fontSize: 15,
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        )),
-                                    GridColumn(
-                                      columnName: 'name',
-                                      // width: MediaQuery.of(context).size.width/2,
-                                      label: Center(
-                                        child: Text(
-                                          "Наименование",
-                                          style: TextStyle(
-                                              fontSize: 15,
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold),
-                                        ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                      alignment: Alignment.topLeft,
+                      child: ElevatedButton(
+                          onPressed: () {
+                            _department = null;
+                            showDialogMeneger();
+                          },
+                          style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all(Colors.grey[800])),
+                          child: Text("Добавить"))),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Expanded(
+                      child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height,
+                          child: Card(
+                              child: Padding(
+                                  padding: EdgeInsets.all(10),
+                                  child: SfDataGridTheme(
+                                    data: SfDataGridThemeData(
+                                      headerColor: Colors.grey[700],
+                                      rowHoverColor: Colors.grey,
+                                      rowHoverTextStyle: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 15,
                                       ),
                                     ),
-                                    GridColumn(
-                                        columnName: "edit",
-                                        maximumWidth: 150,
-                                        label: Container(
-                                            padding: EdgeInsets.all(16.0),
-                                            alignment: Alignment.center,
-                                            child: Text(
-                                              'Изменить',
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold),
-                                            ))),
-                                    GridColumn(
-                                        columnName: "delete",
-                                        maximumWidth: 150,
-                                        label: Container(
-                                            padding: EdgeInsets.all(16.0),
-                                            alignment: Alignment.center,
-                                            child: Text(
-                                              'Удалить',
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold),
-                                            ))),
-                                  ]),
-                            ))))
-                  ],
-                ),
+                                    child: SfDataGrid(
+                                        source: _departmentDataGridSource,
+                                        selectionMode: SelectionMode.single,
+                                        headerGridLinesVisibility:
+                                            GridLinesVisibility.vertical,
+                                        columnWidthMode: ColumnWidthMode.fill,
+                                        // allowFiltering: true,
+                                        allowSorting: true,
+                                        allowEditing: true,
+                                        onCellTap: (cell) async {
+                                          if (cell.rowColumnIndex.rowIndex >
+                                              -1) {
+                                            if (cell.rowColumnIndex
+                                                    .columnIndex ==
+                                                2) {
+                                              _department = _departments[
+                                                  cell.rowColumnIndex.rowIndex -
+                                                      1];
+                                              showDialogMeneger();
+                                            }
+                                            if (cell.rowColumnIndex
+                                                    .columnIndex ==
+                                                3) {
+                                              await showDialog<void>(
+                                                context: context,
+                                                barrierDismissible: true,
+                                                // false = user must tap button, true = tap outside dialog
+                                                builder: (BuildContext
+                                                    dialogContext) {
+                                                  return AlertDialog(
+                                                    content: Text(
+                                                        'Хотите удалить ?'),
+                                                    actions: <Widget>[
+                                                      TextButton(
+                                                        child: Text('Да'),
+                                                        onPressed: () {
+                                                          _controller
+                                                              .deleteById(
+                                                                  "department/delete",
+                                                                  _departments[
+                                                                          cell.rowColumnIndex.rowIndex -
+                                                                              1]
+                                                                      .id
+                                                                      .toString())
+                                                              .then((value) {
+                                                            _controller
+                                                                .fetchdepartment();
+                                                          });
+                                                          Navigator.of(
+                                                                  dialogContext)
+                                                              .pop(); // Dismiss alert dialog
+                                                        },
+                                                      ),
+                                                      TextButton(
+                                                        child: Text('Нет'),
+                                                        onPressed: () {
+                                                          Navigator.of(
+                                                                  dialogContext)
+                                                              .pop(); // Dismiss alert dialog
+                                                        },
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              );
+                                            }
+                                          }
+                                        },
+                                        columns: [
+                                          GridColumn(
+                                              columnName: 'id',
+                                              width: 100,
+                                              label: Center(
+                                                child: Text(
+                                                  "№",
+                                                  style: TextStyle(
+                                                      fontSize: 15,
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                              )),
+                                          GridColumn(
+                                            columnName: 'name',
+                                            // width: MediaQuery.of(context).size.width/2,
+                                            label: Center(
+                                              child: Text(
+                                                "Наименование",
+                                                style: TextStyle(
+                                                    fontSize: 15,
+                                                    color: Colors.white,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ),
+                                          ),
+                                          GridColumn(
+                                              columnName: "edit",
+                                              maximumWidth: 150,
+                                              label: Container(
+                                                  padding: EdgeInsets.all(16.0),
+                                                  alignment: Alignment.center,
+                                                  child: Text(
+                                                    'Изменить',
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ))),
+                                          GridColumn(
+                                              columnName: "delete",
+                                              maximumWidth: 150,
+                                              label: Container(
+                                                  padding: EdgeInsets.all(16.0),
+                                                  alignment: Alignment.center,
+                                                  child: Text(
+                                                    'Удалить',
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ))),
+                                        ]),
+                                  )))))
+                ]),
               )));
     });
   }
@@ -220,9 +288,9 @@ class _DepartmentPageState extends State<DepartmentPage> {
                 }
                 _department!.name = _nameController.text;
                 _controller
-                    .changeDepartment("department/save", _department)
+                    .changeObject("department/save", _department)
                     .then((value) {
-                      _controller.fetchdepartment();
+                  _controller.fetchdepartment();
                   Navigator.of(dialogContext).pop(); // Dismiss alert dialog
                 });
               },
@@ -245,7 +313,8 @@ class DepartmentDataGridSource extends DataGridSource {
   DepartmentDataGridSource(List<Department> departments) {
     dataGridRows = departments
         .map<DataGridRow>((e) => DataGridRow(cells: [
-              DataGridCell<int>(columnName: 'id', value: e.id),
+              DataGridCell<int>(
+                  columnName: 'id', value: departments.indexOf(e) + 1),
               DataGridCell<String>(columnName: 'name', value: e.name),
               DataGridCell<Icon>(columnName: 'edit', value: Icon(Icons.edit)),
               DataGridCell<Icon>(

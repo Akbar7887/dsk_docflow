@@ -26,10 +26,14 @@ class Controller extends GetxController {
     }
   }
 
-  Future<Department?> changeDepartment(url, object) async {
+  Future<Department?> changeObject(url, object) async {
     final json = await api.save(url, object);
     department = Department.fromJson(json);
     return department;
+  }
+
+  Future<bool> deleteById(url, id) async {
+    return  await api.deleteById(url, id);
   }
 }
 
