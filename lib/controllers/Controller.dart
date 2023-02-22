@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 
 class Controller extends GetxController {
   final api = ApiConnector();
-  Department? department;
+  List<Department> departments = <Department>[].obs;
 
   @override
   onInit() {
@@ -14,10 +14,10 @@ class Controller extends GetxController {
 
   fetchdepartment() async {
     final json = await api.getAll("department/get");
-    Department loadDepartment = Department.fromJson(json);
+    List<Department> loadDepartment = json.map((e) => Department.fromJson(e));
 
-    if (loadDepartment != null) {
-      department = loadDepartment;
+    if (loadDepartment.isNotEmpty) {
+      departments = loadDepartment;
     }
     update();
   }

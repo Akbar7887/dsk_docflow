@@ -3,7 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
+import '../models/Department.dart';
 import '../widgets/dskappbar.dart';
 
 class DepartmentPage extends StatefulWidget {
@@ -14,30 +16,85 @@ class DepartmentPage extends StatefulWidget {
 }
 
 class _DepartmentPageState extends State<DepartmentPage> {
+  final _controller = Get.put(Controller());
+  late List<Department> _departments;
+  late DepartmentDataGridSource _departmentDataGridSource;
 
-  final Controller controller = Get.find();
+  @override
+  void initState() {
+    _departments = _controller.departments;
+    _departmentDataGridSource = DepartmentDataGridSource(_departments);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: DskAppBar(), // extendBodyBehindAppBar: true,
-      body: Column(
-        children: [
-          SizedBox(
-            height: 50,
+        appBar: DskAppBar(), // extendBodyBehindAppBar: true,
+        body: Padding(
+          padding: EdgeInsets.only(left: 50, right: 50),
+          child: Column(
+            children: [
+              SizedBox(
+                height: 50,
+              ),
+              Container(
+                  alignment: Alignment.topLeft,
+                  child: ElevatedButton(
+                      onPressed: () {}, child: Text("Добавить"))),
+              SizedBox(
+                height: 20,
+              ),
+              Expanded(
+                  child:
+                      SfDataGrid(source: _departmentDataGridSource, columns: [
+                GridColumn(
+                    columnName: 'id',
+                    label: Center(
+                      child: Text(
+                        "№",
+                        style: TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.bold),
+                      ),
+                    )),
+                GridColumn(
+                    columnName: 'name',
+                    label: Center(
+                      child: Text(
+                        "Наименование",
+                        style: TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.bold),
+                      ),
+                    )),
+              ]))
+            ],
           ),
-          Container(
-              width: 200,
-              child: ElevatedButton(onPressed: () {}, child: Text("Добавить"))),
-          SizedBox(
-            height: 20,
-          ),
-
-
-        ],
-      ),
-    );
+        ));
   }
 }
 
+class DepartmentDataGridSource extends DataGridSource {
+  DepartmentDataGridSource(List<Department> departments) {
+    dataGridRows = departments
+        .map<DataGridRow>((e) => DataGridRow(cells: [
+              DataGridCell<int>(columnName: 'id', value: e.id),
+              DataGridCell<String>(columnName: 'name', value: e.name)
+            ]))
+        .toList();
+  }
 
+  late List<DataGridRow> dataGridRows;
+
+  @override
+  List<DataGridRow> get rows => dataGridRows;
+
+  @override
+  DataGridRowAdapter? buildRow(DataGridRow row) {
+    throw DataGridRowAdapter(
+        cells: row.getCells().map<Widget>((e) {
+      return Container(
+        child: Text(e.value.toString()),
+      );
+    }).toList());
+  }
+}
