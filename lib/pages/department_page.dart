@@ -169,7 +169,7 @@ class _DepartmentPageState extends State<DepartmentPage> {
                                         columns: [
                                           GridColumn(
                                               columnName: 'id',
-                                              width: 100,
+                                              width: 50,
                                               label: Center(
                                                 child: Text(
                                                   "№",
