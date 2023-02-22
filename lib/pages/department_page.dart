@@ -17,13 +17,15 @@ class DepartmentPage extends StatefulWidget {
 
 class _DepartmentPageState extends State<DepartmentPage> {
   final _controller = Get.put(Controller());
-  late List<Department> _departments;
+
+  // late List<Department> _departments;
   late DepartmentDataGridSource _departmentDataGridSource;
 
   @override
   void initState() {
-    _departments = _controller.departments;
-    _departmentDataGridSource = DepartmentDataGridSource(_departments);
+    _departmentDataGridSource =
+        DepartmentDataGridSource(_controller.departments);
+
     super.initState();
   }
 
@@ -33,7 +35,7 @@ class _DepartmentPageState extends State<DepartmentPage> {
         appBar: DskAppBar(), // extendBodyBehindAppBar: true,
         body: Padding(
           padding: EdgeInsets.only(left: 50, right: 50),
-          child: Column(
+          child: ListView(
             children: [
               SizedBox(
                 height: 50,
@@ -45,28 +47,30 @@ class _DepartmentPageState extends State<DepartmentPage> {
               SizedBox(
                 height: 20,
               ),
-              Expanded(
+              Container(
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
                   child:
                       SfDataGrid(source: _departmentDataGridSource, columns: [
-                GridColumn(
-                    columnName: 'id',
-                    label: Center(
-                      child: Text(
-                        "№",
-                        style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.bold),
-                      ),
-                    )),
-                GridColumn(
-                    columnName: 'name',
-                    label: Center(
-                      child: Text(
-                        "Наименование",
-                        style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.bold),
-                      ),
-                    )),
-              ]))
+                    GridColumn(
+                        columnName: 'id',
+                        label: Center(
+                          child: Text(
+                            "№",
+                            style: TextStyle(
+                                fontSize: 15, fontWeight: FontWeight.bold),
+                          ),
+                        )),
+                    GridColumn(
+                        columnName: 'name',
+                        label: Center(
+                          child: Text(
+                            "Наименование",
+                            style: TextStyle(
+                                fontSize: 15, fontWeight: FontWeight.bold),
+                          ),
+                        )),
+                  ]))
             ],
           ),
         ));

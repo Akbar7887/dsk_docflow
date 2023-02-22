@@ -7,7 +7,7 @@ class ApiConnector extends GetConnect{
 
   final api = Api();
 
-  Future<dynamic> getAll(String url) async {
+  Future<List<dynamic>> getAll(String url) async {
     final json = await api.getAll(url);
 
     return json;

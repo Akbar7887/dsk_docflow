@@ -8,18 +8,19 @@ class Controller extends GetxController {
 
   @override
   onInit() {
-    super.onInit();
     fetchdepartment();
+    super.onInit();
+
   }
 
   fetchdepartment() async {
     final json = await api.getAll("department/get");
-    List<Department> loadDepartment = json.map((e) => Department.fromJson(e));
+    final loadDepartment = json.map((e) => Department.fromJson(e)).toList();
 
     if (loadDepartment.isNotEmpty) {
       departments = loadDepartment;
     }
-    update();
+    // update();
   }
 }
 

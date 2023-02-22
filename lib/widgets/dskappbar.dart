@@ -29,7 +29,7 @@ class DskAppBar extends StatelessWidget with PreferredSizeWidget {
             )),
         TextButton(
             onPressed: () {
-
+              Get.offAll(OrderPage());
               Get.to(DepartmentPage());
             },
             child: Text(
