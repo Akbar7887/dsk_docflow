@@ -29,4 +29,19 @@ class Api{
       throw Exception("Error");
     }
   }
+
+  Future<dynamic> post(String url, Object object) async{
+    Uri uri = Uri.parse("${UiC.url}${url}");
+
+    final response = await http.post(uri, body: json.encode(object), headers: header);
+
+    if (response.statusCode == 200
+        || response.statusCode == 201) {
+      final json = jsonDecode(utf8.decode(response.bodyBytes));
+
+      return json; //json.map((e) => Catalog.fromJson(e)).toList();
+    } else {
+      throw Exception("Error");
+    }
+  }
 }

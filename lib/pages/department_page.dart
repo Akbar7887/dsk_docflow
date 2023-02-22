@@ -1,8 +1,10 @@
+import 'package:dsk_docflow/api/Api.dart';
 import 'package:dsk_docflow/controllers/Controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
@@ -18,12 +20,15 @@ class DepartmentPage extends StatefulWidget {
 
 class _DepartmentPageState extends State<DepartmentPage> {
   Controller _controller = Get.put(Controller());
-
   List<Department> _departments = [];
+  Department? _department;
   late DepartmentDataGridSource _departmentDataGridSource;
+  final _keyForm = GlobalKey<FormState>();
 
   @override
   void initState() {
+    _departments = _controller.departments;
+
     super.initState();
   }
 
@@ -46,7 +51,11 @@ class _DepartmentPageState extends State<DepartmentPage> {
                     Container(
                         alignment: Alignment.topLeft,
                         child: ElevatedButton(
-                            onPressed: () {}, child: Text("Добавить"))),
+                            onPressed: () {
+                              _department = null;
+                              showDialogMeneger();
+                            },
+                            child: Text("Добавить"))),
                     SizedBox(
                       height: 20,
                     ),
@@ -69,11 +78,22 @@ class _DepartmentPageState extends State<DepartmentPage> {
                                   selectionMode: SelectionMode.single,
                                   headerGridLinesVisibility:
                                       GridLinesVisibility.vertical,
-                                  columnWidthMode:
-                                      ColumnWidthMode.fill,
+                                  columnWidthMode: ColumnWidthMode.fill,
                                   // allowFiltering: true,
                                   allowSorting: true,
                                   allowEditing: true,
+                                  onCellTap: (cell) {
+                                    if (cell.rowColumnIndex.rowIndex > -1) {
+                                      if (cell.rowColumnIndex.columnIndex ==
+                                          2) {
+                                        _department = _departments[
+                                            cell.rowColumnIndex.rowIndex - 1];
+                                        showDialogMeneger();
+                                      }
+                                      if (cell.rowColumnIndex.columnIndex ==
+                                          3) {}
+                                    }
+                                  },
                                   columns: [
                                     GridColumn(
                                         columnName: 'id',
@@ -131,6 +151,94 @@ class _DepartmentPageState extends State<DepartmentPage> {
               )));
     });
   }
+
+  Future<void> showDialogMeneger() async {
+    TextEditingController _nameController = TextEditingController();
+    String _id = '';
+    if (_department != null) {
+      _nameController.text = _department!.name!;
+      _id = _department!.id.toString();
+    } else {
+      _id = '';
+      _nameController.text = '';
+    }
+
+    return await showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      // false = user must tap button, true = tap outside dialog
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: Text('Форма для добавление или изменение'),
+          content: Container(
+              width: MediaQuery.of(context).size.width / 3,
+              height: MediaQuery.of(context).size.height / 3,
+              child: Form(
+                  key: _keyForm,
+                  child: Column(
+                    children: [
+                      Container(
+                          alignment: Alignment.topLeft,
+                          child: Text('№ ${_id}')),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      TextFormField(
+                          controller: _nameController,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Просим заплнить наименование";
+                            }
+                          },
+                          style: GoogleFonts.openSans(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w200,
+                              color: Colors.black),
+                          decoration: InputDecoration(
+                              fillColor: Colors.white,
+                              //Theme.of(context).backgroundColor,
+                              labelText: "Наименование",
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: BorderSide(
+                                      width: 0.5, color: Colors.black)),
+                              focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: BorderSide(
+                                      width: 0.5, color: Colors.black)))),
+                    ],
+                  ))),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                if (!_keyForm.currentState!.validate()) {
+                  return;
+                }
+
+                if (_department == null) {
+                  _department = Department();
+                }
+                _department!.name = _nameController.text;
+                _controller
+                    .changeDepartment("department/save", _department)
+                    .then((value) {
+                      _controller.fetchdepartment();
+                  Navigator.of(dialogContext).pop(); // Dismiss alert dialog
+                });
+              },
+              child: Text('Сохранить'),
+            ),
+            TextButton(
+              child: Text('Отменить'),
+              onPressed: () {
+                Navigator.of(dialogContext).pop(); // Dismiss alert dialog
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 }
 
 class DepartmentDataGridSource extends DataGridSource {
@@ -141,7 +249,6 @@ class DepartmentDataGridSource extends DataGridSource {
               DataGridCell<String>(columnName: 'name', value: e.name),
               DataGridCell<Icon>(columnName: 'edit', value: Icon(Icons.edit)),
               DataGridCell<Icon>(
-
                   columnName: 'delete', value: Icon(Icons.delete)),
             ]))
         .toList();
@@ -154,27 +261,26 @@ class DepartmentDataGridSource extends DataGridSource {
 
   @override
   DataGridRowAdapter? buildRow(DataGridRow row) {
-    return DataGridRowAdapter(
-        cells: [
-          Container(
-            alignment: Alignment.center,
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: Text(row.getCells()[0].value.toString()),
-          ),
-          Container(
-            alignment: Alignment.center,
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: Text(row.getCells()[1].value.toString()),
-          ),
-          Container(
-              alignment: Alignment.center,
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Icon(Icons.edit)),
-          Container(
-            alignment: Alignment.center,
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: Icon(Icons.delete),
-          ),
-        ]);
+    return DataGridRowAdapter(cells: [
+      Container(
+        alignment: Alignment.center,
+        padding: EdgeInsets.symmetric(horizontal: 16),
+        child: Text(row.getCells()[0].value.toString()),
+      ),
+      Container(
+        alignment: Alignment.center,
+        padding: EdgeInsets.symmetric(horizontal: 16),
+        child: Text(row.getCells()[1].value.toString()),
+      ),
+      Container(
+          alignment: Alignment.center,
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          child: row.getCells()[2].value),
+      Container(
+        alignment: Alignment.center,
+        padding: EdgeInsets.symmetric(horizontal: 16),
+        child: row.getCells()[3].value,
+      ),
+    ]);
   }
 }

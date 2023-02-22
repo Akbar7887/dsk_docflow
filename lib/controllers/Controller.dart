@@ -6,6 +6,7 @@ class Controller extends GetxController {
   final api = ApiConnector();
   var departments = <Department>[].obs;
   var departmenterror = false.obs;
+  Department? department;
 
   @override
   onInit() {
@@ -18,11 +19,17 @@ class Controller extends GetxController {
     List<Department> loadDepartment =
         json.map((e) => Department.fromJson(e)).toList();
 
-    if(loadDepartment.isNotEmpty){
+    if (loadDepartment.isNotEmpty) {
       departments.value = loadDepartment;
-    }else{
+    } else {
       departmenterror.value = true;
     }
+  }
+
+  Future<Department?> changeDepartment(url, object) async {
+    final json = await api.save(url, object);
+    department = Department.fromJson(json);
+    return department;
   }
 }
 
