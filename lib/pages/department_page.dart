@@ -43,7 +43,7 @@ class _DepartmentPageState extends State<DepartmentPage> {
           child: Scaffold(
               appBar: DskAppBar(), // extendBodyBehindAppBar: true,
               body: Padding(
-                padding: EdgeInsets.only(left: 50, right: 50),
+                padding: EdgeInsets.only(left: 20, right: 20),
                 child: ListView(children: [
                   SizedBox(
                     height: 10,
@@ -59,7 +59,7 @@ class _DepartmentPageState extends State<DepartmentPage> {
                     ),
                   ),
                   SizedBox(
-                    height: 20,
+                    height: 10,
                   ),
                   Container(
                       alignment: Alignment.topLeft,
@@ -79,13 +79,19 @@ class _DepartmentPageState extends State<DepartmentPage> {
                       child: Container(
                           width: MediaQuery.of(context).size.width,
                           height: MediaQuery.of(context).size.height,
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: Colors.blue.shade800)),
                           child: Card(
+                            elevation: 5,
                               child: Padding(
                                   padding: EdgeInsets.all(10),
                                   child: SfDataGridTheme(
                                     data: SfDataGridThemeData(
                                       headerColor: Colors.grey[700],
                                       rowHoverColor: Colors.grey,
+                                      gridLineStrokeWidth: 1,
+
                                       rowHoverTextStyle: TextStyle(
                                         color: Colors.white,
                                         fontSize: 15,
@@ -100,6 +106,7 @@ class _DepartmentPageState extends State<DepartmentPage> {
                                         // allowFiltering: true,
                                         allowSorting: true,
                                         allowEditing: true,
+                                        gridLinesVisibility: GridLinesVisibility.both,
                                         onCellTap: (cell) async {
                                           if (cell.rowColumnIndex.rowIndex >
                                               -1) {
@@ -337,7 +344,7 @@ class DepartmentDataGridSource extends DataGridSource {
         child: Text(row.getCells()[0].value.toString()),
       ),
       Container(
-        alignment: Alignment.center,
+        alignment: Alignment.centerLeft,
         padding: EdgeInsets.symmetric(horizontal: 16),
         child: Text(row.getCells()[1].value.toString()),
       ),

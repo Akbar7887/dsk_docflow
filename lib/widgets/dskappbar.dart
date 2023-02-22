@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
+enum Menu { Department, Menegers, News, Vacansy }
+
 class DskAppBar extends StatelessWidget with PreferredSizeWidget {
   const DskAppBar({Key? key}) : super(key: key);
 
@@ -19,23 +21,40 @@ class DskAppBar extends StatelessWidget with PreferredSizeWidget {
       backgroundColor: Colors.black,
       elevation: 0.0,
       actions: [
-        TextButton(
-            onPressed: () {
-              Get.to(() => OrderPage());
-            },
-            child: Text(
-              "ЗАКАЗЫ",
-              style: TextStyle(fontSize: 20, color: Colors.white),
-            )),
-        TextButton(
-            onPressed: () {
-              // Get.offAll(OrderPage());
-              Get.to(() => DepartmentPage());
-            },
-            child: Text(
-              "ДЕПАРТАМЕНТЫ",
-              style: TextStyle(fontSize: 20, color: Colors.white),
-            ))
+        Container(
+            alignment: Alignment.center,
+            child: TextButton(
+                onPressed: () {
+                  Get.to(() => OrderPage());
+                },
+                child: Text(
+                  "Заказы",
+                  style: TextStyle(fontSize: 20, color: Colors.white),
+                ))),
+        SizedBox(width: 20,),
+        Container(
+            alignment: Alignment.center,
+            child: PopupMenuButton<Menu>(
+                position: PopupMenuPosition.under,
+                elevation: 5,
+                offset: const Offset(0, 30),
+                child: Text(
+                  "Справочники",
+                  style: TextStyle(fontSize: 20, color: Colors.white),
+                ),
+                itemBuilder: (BuildContext context) => <PopupMenuEntry<Menu>>[
+                      PopupMenuItem(
+                        child: TextButton(
+                            onPressed: () {
+                              // Get.offAll(OrderPage());
+                              Get.to(() => DepartmentPage());
+                            },
+                            child: Text(
+                              "ДЕПАРТАМЕНТЫ",
+                              style: TextStyle(fontSize: 20),
+                            )),
+                      )
+                    ]))
       ],
 
       title: Text(
