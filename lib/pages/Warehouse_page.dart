@@ -1,40 +1,54 @@
+import 'package:dsk_docflow/api/Api.dart';
 import 'package:dsk_docflow/controllers/Controller.dart';
-import 'package:dsk_docflow/models/Position.dart';
 import 'package:dsk_docflow/models/UiC.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../generated/l10n.dart';
+import '../models/Department.dart';
 import '../widgets/dskappbar.dart';
 
-class PositionPage extends StatefulWidget {
-  const PositionPage({Key? key}) : super(key: key);
+class WarehousePage extends StatefulWidget {
+  WarehousePage({Key? key, required this.data}) : super(key: key);
+
+  String data;
 
   @override
-  State<PositionPage> createState() => _PositionPageState();
+  State<WarehousePage> createState() => _WarehousePageState(data: this.data);
 }
 
-class _PositionPageState extends State<PositionPage> {
+class _WarehousePageState extends State<WarehousePage> {
+  _WarehousePageState({required this.data});
+
+  String data;
+
   Controller _controller = Get.put(Controller());
-  List<Position> _positions = [];
-  Position? _position;
-  late PositionDataGridSource _positionDataGridSource;
+  List<dynamic> _objects = [];
+  dynamic _object;
+  late ObjectDataGridSource _objectDataGridSource;
   final _keyForm = GlobalKey<FormState>();
 
   @override
   void initState() {
-    _positions = _controller.positions;
-
+    if (data == "warehouse") {
+      _objects = _controller.warehouses;
+    } else if (data == "department") {
+      _objects = _controller.departments;
+    } else if (data == "position") {
+      _objects = _controller.positions;
+    }
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      _positionDataGridSource = PositionDataGridSource(_controller.positions);
+      _objectDataGridSource = ObjectDataGridSource(_objects);
 
       return SafeArea(
           child: Scaffold(
@@ -48,7 +62,7 @@ class _PositionPageState extends State<PositionPage> {
                   Container(
                     alignment: Alignment.center,
                     child: Text(
-                      "Должности",
+                      "${data}",
                       style: TextStyle(
                           fontSize: 20,
                           fontFamily: UiC.font,
@@ -62,7 +76,7 @@ class _PositionPageState extends State<PositionPage> {
                       alignment: Alignment.topLeft,
                       child: ElevatedButton(
                           onPressed: () {
-                            _position = null;
+                            _object = null;
                             showDialogMeneger();
                           },
                           style: ButtonStyle(
@@ -72,8 +86,7 @@ class _PositionPageState extends State<PositionPage> {
                   SizedBox(
                     height: 20,
                   ),
-                  Expanded(
-                      child: Container(
+                  Container(
                           width: MediaQuery.of(context).size.width,
                           height: MediaQuery.of(context).size.height,
                           decoration: BoxDecoration(
@@ -93,7 +106,7 @@ class _PositionPageState extends State<PositionPage> {
                                       ),
                                     ),
                                     child: SfDataGrid(
-                                        source: _positionDataGridSource,
+                                        source: _objectDataGridSource,
                                         selectionMode: SelectionMode.single,
                                         headerGridLinesVisibility:
                                             GridLinesVisibility.vertical,
@@ -109,7 +122,7 @@ class _PositionPageState extends State<PositionPage> {
                                             if (cell.rowColumnIndex
                                                     .columnIndex ==
                                                 2) {
-                                              _position = _positions[
+                                              _object = _objects[
                                                   cell.rowColumnIndex.rowIndex -
                                                       1];
                                               showDialogMeneger();
@@ -132,8 +145,8 @@ class _PositionPageState extends State<PositionPage> {
                                                         onPressed: () {
                                                           _controller
                                                               .deleteById(
-                                                                  "position/delete",
-                                                                  _positions[cell
+                                                                  "${data}/delete",
+                                                                  _objects[cell
                                                                               .rowColumnIndex
                                                                               .rowIndex -
                                                                           1]
@@ -141,8 +154,7 @@ class _PositionPageState extends State<PositionPage> {
                                                                       .toString())
                                                               .then((value) {
                                                             _controller
-                                                                .fetchObjects(
-                                                                    "position");
+                                                                .fetchObjects(data);
                                                           });
                                                           Navigator.of(
                                                                   dialogContext)
@@ -219,7 +231,7 @@ class _PositionPageState extends State<PositionPage> {
                                                             FontWeight.bold),
                                                   ))),
                                         ]),
-                                  )))))
+                                  ))))
                 ]),
               )));
     });
@@ -228,9 +240,9 @@ class _PositionPageState extends State<PositionPage> {
   Future<void> showDialogMeneger() async {
     TextEditingController _nameController = TextEditingController();
     String _id = '';
-    if (_position != null) {
-      _nameController.text = _position!.name!;
-      _id = _position!.id.toString();
+    if (_object != null) {
+      _nameController.text = _object!.name!;
+      _id = _object!.id.toString();
     } else {
       _id = '';
       _nameController.text = '';
@@ -288,14 +300,12 @@ class _PositionPageState extends State<PositionPage> {
                   return;
                 }
 
-                if (_position == null) {
-                  _position = Position();
+                if (_object == null) {
+                  _object = Department();
                 }
-                _position!.name = _nameController.text;
-                _controller
-                    .changeObject("position/save", _position)
-                    .then((value) {
-                  _controller.fetchObjects("position");
+                _object!.name = _nameController.text;
+                _controller.changeObject("${data}/save", _object).then((value) {
+                  _controller.fetchObjects(data);
                   Navigator.of(dialogContext).pop(); // Dismiss alert dialog
                 });
               },
@@ -314,12 +324,12 @@ class _PositionPageState extends State<PositionPage> {
   }
 }
 
-class PositionDataGridSource extends DataGridSource {
-  PositionDataGridSource(List<Position> positions) {
-    dataGridRows = positions
+class ObjectDataGridSource extends DataGridSource {
+  ObjectDataGridSource(List<dynamic> objects) {
+    dataGridRows = objects
         .map<DataGridRow>((e) => DataGridRow(cells: [
               DataGridCell<int>(
-                  columnName: 'id', value: positions.indexOf(e) + 1),
+                  columnName: 'id', value: objects.indexOf(e) + 1),
               DataGridCell<String>(columnName: 'name', value: e.name),
               DataGridCell<Icon>(columnName: 'edit', value: Icon(Icons.edit)),
               DataGridCell<Icon>(

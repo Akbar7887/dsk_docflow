@@ -1,6 +1,7 @@
 import 'package:dsk_docflow/controllers/ApiConnector.dart';
 import 'package:dsk_docflow/models/Department.dart';
 import 'package:dsk_docflow/models/Position.dart';
+import 'package:dsk_docflow/models/Warehouse.dart';
 import 'package:get/get.dart';
 
 class Controller extends GetxController {
@@ -10,21 +11,32 @@ class Controller extends GetxController {
   Department? department;
   var positions = <Position>[].obs;
   Position? position;
+  var warehouses = <Warehouse>[].obs;
+  Warehouse? warehouse;
 
   @override
   onInit() {
-    fetchdepartment();
-    fetchposition();
+    fetchObjects("department");
+    fetchObjects("position");
+    fetchObjects("warehouse");
+
     super.onInit();
   }
 
-  fetchdepartment() async {
-    final json = await api.getAll("department/get");
-    List<Department> loadDepartment =
-        json.map((e) => Department.fromJson(e)).toList();
-
-    if (loadDepartment.isNotEmpty) {
+  fetchObjects(String data) async {
+    final json = await api.getAll("${data}/get");
+    if (data ==  "department") {
+      List<Department> loadDepartment =
+          json.map((e) => Department.fromJson(e)).toList();
       departments.value = loadDepartment;
+    } else if (data ==  "position") {
+      List<Position> loadPosition =
+          json.map((e) => Position.fromJson(e)).toList();
+      positions.value = loadPosition;
+    } else if (data ==  "warehouse") {
+      List<Warehouse> loadWarehouse =
+          json.map((e) => Warehouse.fromJson(e)).toList();
+      warehouses.value = loadWarehouse;
     } else {
       objecterror.value = true;
     }
@@ -43,18 +55,6 @@ class Controller extends GetxController {
 
   Future<bool> deleteById(url, id) async {
     return await api.deleteById(url, id);
-  }
-
-  fetchposition() async {
-    final json = await api.getAll("position/get");
-    List<Position> loadPosition =
-        json.map((e) => Position.fromJson(e)).toList();
-
-    if (loadPosition.isNotEmpty) {
-      positions.value = loadPosition;
-    } else {
-      objecterror.value = true;
-    }
   }
 }
 

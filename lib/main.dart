@@ -1,4 +1,5 @@
 import 'package:dsk_docflow/models/UiC.dart';
+import 'package:dsk_docflow/pages/Warehouse_page.dart';
 import 'package:dsk_docflow/pages/department_page.dart';
 import 'package:dsk_docflow/pages/home.dart';
 import 'package:dsk_docflow/pages/order_page.dart';
@@ -44,10 +45,11 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       initialBinding: HomeBindings(),
       getPages: [
-        GetPage(name: '/', page: () => DepartmentPage()),
+        GetPage(name: '/', page: () => WarehousePage(data: "department")),
         GetPage(name: '/department', page: () => Home()),
-        GetPage(name: '/position', page: () => PositionPage()),
-        GetPage(name: "/order", page: () => OrderPage())
+        GetPage(name: '/position', page: () =>  PositionPage()),
+        GetPage(name: '/warehouse', page: () =>  WarehousePage(data: "warehouse")),
+        // GetPage(name: "/order", page: () => OrderPage())
         // GetPage(name: '/kompleksdetails', page: () => KompleksDetailesPage()),
       ],
     );

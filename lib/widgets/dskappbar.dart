@@ -1,11 +1,9 @@
 import 'package:dsk_docflow/models/UiC.dart';
-import 'package:dsk_docflow/pages/department_page.dart';
+import 'package:dsk_docflow/pages/Warehouse_page.dart';
 import 'package:dsk_docflow/pages/order_page.dart';
 import 'package:dsk_docflow/pages/position_page.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 enum Menu { Department, Menegers, News, Vacansy }
 
@@ -45,29 +43,35 @@ class DskAppBar extends StatelessWidget with PreferredSizeWidget {
                   "Справочники",
                   style: TextStyle(fontSize: 20, color: Colors.white),
                 ),
+                onSelected: (menuitem) {
+                  String m = "";
+                },
                 itemBuilder: (BuildContext context) => <PopupMenuEntry<Menu>>[
                       PopupMenuItem(
-                        child: TextButton(
-                            onPressed: () {
-                              // Get.offAll(OrderPage());
-                              Get.to(() => DepartmentPage());
-                            },
-                            child: Text(
-                              "Департаменты",
-                              style: TextStyle(fontSize: 20),
-                            )),
-                      ),
+                          onTap: () {
+
+                            Get.to(() => WarehousePage(data: "department"));
+                          },
+                          child: Text(
+                            "Департаменты",
+                            style: TextStyle(fontSize: 20),
+                          )),
                       PopupMenuItem(
-                        child: TextButton(
-                            onPressed: () {
-                              // Get.offAll(OrderPage());
-                              Get.to(() => PositionPage());
-                            },
-                            child: Text(
-                              "Должности",
-                              style: TextStyle(fontSize: 20),
-                            )),
-                      )
+                          onTap: () {
+                            Get.to(() => PositionPage());
+                          },
+                          child: Text(
+                            "Должности",
+                            style: TextStyle(fontSize: 20),
+                          )),
+                      PopupMenuItem(
+                          onTap: () {
+                            Get.to(() => WarehousePage(data: "warehouse"));
+                          },
+                          child: Text(
+                            "Склады",
+                            style: TextStyle(fontSize: 20),
+                          )),
                     ]))
       ],
 
