@@ -13,28 +13,21 @@ import '../generated/l10n.dart';
 import '../models/Department.dart';
 import '../widgets/dskappbar.dart';
 
-class WarehousePage extends StatefulWidget {
-  WarehousePage( @required this.data) : super();
+String? data;
+
+Controller _controller = Get.put(Controller());
+List<dynamic> _objects = [];
+dynamic _object;
+late ObjectDataGridSource _objectDataGridSource;
+final _keyForm = GlobalKey<FormState>();
+
+class WarehousePage extends GetView<Controller> {
+  WarehousePage(@required this.data) : super();
 
   String data;
 
   @override
-  State<WarehousePage> createState() => _WarehousePageState(data: this.data);
-}
-
-class _WarehousePageState extends State<WarehousePage> {
-  _WarehousePageState({required this.data});
-
-  String data;
-
-  Controller _controller = Get.put(Controller());
-  List<dynamic> _objects = [];
-  dynamic _object;
-  late ObjectDataGridSource _objectDataGridSource;
-  final _keyForm = GlobalKey<FormState>();
-
-  @override
-  void initState() {
+  Widget build(BuildContext context) {
     if (data == "warehouse") {
       _objects = _controller.warehouses;
     } else if (data == "department") {
@@ -42,11 +35,7 @@ class _WarehousePageState extends State<WarehousePage> {
     } else if (data == "position") {
       _objects = _controller.positions;
     }
-    super.initState();
-  }
 
-  @override
-  Widget build(BuildContext context) {
     return Obx(() {
       _objectDataGridSource = ObjectDataGridSource(_objects);
 
@@ -77,7 +66,7 @@ class _WarehousePageState extends State<WarehousePage> {
                       child: ElevatedButton(
                           onPressed: () {
                             _object = null;
-                            showDialogMeneger();
+                            showDialogMeneger(context);
                           },
                           style: ButtonStyle(
                               backgroundColor:
@@ -87,157 +76,151 @@ class _WarehousePageState extends State<WarehousePage> {
                     height: 20,
                   ),
                   Container(
-                          width: MediaQuery.of(context).size.width,
-                          height: MediaQuery.of(context).size.height,
-                          decoration: BoxDecoration(
-                              border: Border.all(color: Colors.blue.shade800)),
-                          child: Card(
-                              elevation: 5,
-                              child: Padding(
-                                  padding: EdgeInsets.all(10),
-                                  child: SfDataGridTheme(
-                                    data: SfDataGridThemeData(
-                                      headerColor: Colors.grey[700],
-                                      rowHoverColor: Colors.grey,
-                                      gridLineStrokeWidth: 1,
-                                      rowHoverTextStyle: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 15,
-                                      ),
-                                    ),
-                                    child: SfDataGrid(
-                                        source: _objectDataGridSource,
-                                        selectionMode: SelectionMode.single,
-                                        headerGridLinesVisibility:
-                                            GridLinesVisibility.vertical,
-                                        columnWidthMode: ColumnWidthMode.fill,
-                                        // allowFiltering: true,
-                                        allowSorting: true,
-                                        allowEditing: true,
-                                        gridLinesVisibility:
-                                            GridLinesVisibility.both,
-                                        onCellTap: (cell) async {
-                                          if (cell.rowColumnIndex.rowIndex >
-                                              -1) {
-                                            if (cell.rowColumnIndex
-                                                    .columnIndex ==
-                                                2) {
-                                              _object = _objects[
-                                                  cell.rowColumnIndex.rowIndex -
-                                                      1];
-                                              showDialogMeneger();
-                                            }
-                                            if (cell.rowColumnIndex
-                                                    .columnIndex ==
-                                                3) {
-                                              await showDialog<void>(
-                                                context: context,
-                                                barrierDismissible: true,
-                                                // false = user must tap button, true = tap outside dialog
-                                                builder: (BuildContext
-                                                    dialogContext) {
-                                                  return AlertDialog(
-                                                    content: Text(
-                                                        'Хотите удалить ?'),
-                                                    actions: <Widget>[
-                                                      TextButton(
-                                                        child: Text('Да'),
-                                                        onPressed: () {
-                                                          _controller
-                                                              .deleteById(
-                                                                  "${data}/delete",
-                                                                  _objects[cell
-                                                                              .rowColumnIndex
-                                                                              .rowIndex -
-                                                                          1]
-                                                                      .id
-                                                                      .toString())
-                                                              .then((value) {
-                                                            _controller
-                                                                .fetchObjects(data);
-                                                          });
-                                                          Navigator.of(
-                                                                  dialogContext)
-                                                              .pop(); // Dismiss alert dialog
-                                                        },
-                                                      ),
-                                                      TextButton(
-                                                        child: Text('Нет'),
-                                                        onPressed: () {
-                                                          Navigator.of(
-                                                                  dialogContext)
-                                                              .pop(); // Dismiss alert dialog
-                                                        },
-                                                      ),
-                                                    ],
-                                                  );
-                                                },
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height,
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.blue.shade800)),
+                      child: Card(
+                          elevation: 5,
+                          child: Padding(
+                              padding: EdgeInsets.all(10),
+                              child: SfDataGridTheme(
+                                data: SfDataGridThemeData(
+                                  headerColor: Colors.grey[700],
+                                  rowHoverColor: Colors.grey,
+                                  gridLineStrokeWidth: 1,
+                                  rowHoverTextStyle: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 15,
+                                  ),
+                                ),
+                                child: SfDataGrid(
+                                    source: _objectDataGridSource,
+                                    selectionMode: SelectionMode.single,
+                                    headerGridLinesVisibility:
+                                        GridLinesVisibility.vertical,
+                                    columnWidthMode: ColumnWidthMode.fill,
+                                    // allowFiltering: true,
+                                    allowSorting: true,
+                                    allowEditing: true,
+                                    gridLinesVisibility:
+                                        GridLinesVisibility.both,
+                                    onCellTap: (cell) async {
+                                      if (cell.rowColumnIndex.rowIndex > -1) {
+                                        if (cell.rowColumnIndex.columnIndex ==
+                                            2) {
+                                          _object = _objects[
+                                              cell.rowColumnIndex.rowIndex - 1];
+                                          showDialogMeneger(context);
+                                        }
+                                        if (cell.rowColumnIndex.columnIndex ==
+                                            3) {
+                                          await showDialog<void>(
+                                            context: context,
+                                            barrierDismissible: true,
+                                            // false = user must tap button, true = tap outside dialog
+                                            builder:
+                                                (BuildContext dialogContext) {
+                                              return AlertDialog(
+                                                content:
+                                                    Text('Хотите удалить ?'),
+                                                actions: <Widget>[
+                                                  TextButton(
+                                                    child: Text('Да'),
+                                                    onPressed: () {
+                                                      _controller
+                                                          .deleteById(
+                                                              "${data}/delete",
+                                                              _objects[cell
+                                                                          .rowColumnIndex
+                                                                          .rowIndex -
+                                                                      1]
+                                                                  .id
+                                                                  .toString())
+                                                          .then((value) {
+                                                        _controller
+                                                            .fetchObjects(data);
+                                                      });
+                                                      Navigator.of(
+                                                              dialogContext)
+                                                          .pop(); // Dismiss alert dialog
+                                                    },
+                                                  ),
+                                                  TextButton(
+                                                    child: Text('Нет'),
+                                                    onPressed: () {
+                                                      Navigator.of(
+                                                              dialogContext)
+                                                          .pop(); // Dismiss alert dialog
+                                                    },
+                                                  ),
+                                                ],
                                               );
-                                            }
-                                          }
-                                        },
-                                        columns: [
-                                          GridColumn(
-                                              columnName: 'id',
-                                              width: 50,
-                                              label: Center(
-                                                child: Text(
-                                                  "№",
-                                                  style: TextStyle(
-                                                      fontSize: 15,
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                              )),
-                                          GridColumn(
-                                            columnName: 'name',
-                                            // width: MediaQuery.of(context).size.width/2,
-                                            label: Center(
+                                            },
+                                          );
+                                        }
+                                      }
+                                    },
+                                    columns: [
+                                      GridColumn(
+                                          columnName: 'id',
+                                          width: 50,
+                                          label: Center(
+                                            child: Text(
+                                              "№",
+                                              style: TextStyle(
+                                                  fontSize: 15,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          )),
+                                      GridColumn(
+                                        columnName: 'name',
+                                        // width: MediaQuery.of(context).size.width/2,
+                                        label: Center(
+                                          child: Text(
+                                            S.of(context).name,
+                                            style: TextStyle(
+                                                fontSize: 15,
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                      ),
+                                      GridColumn(
+                                          columnName: "edit",
+                                          maximumWidth: 150,
+                                          label: Container(
+                                              padding: EdgeInsets.all(16.0),
+                                              alignment: Alignment.center,
                                               child: Text(
-                                                S.of(context).name,
+                                                S.of(context).edit,
                                                 style: TextStyle(
-                                                    fontSize: 15,
                                                     color: Colors.white,
                                                     fontWeight:
                                                         FontWeight.bold),
-                                              ),
-                                            ),
-                                          ),
-                                          GridColumn(
-                                              columnName: "edit",
-                                              maximumWidth: 150,
-                                              label: Container(
-                                                  padding: EdgeInsets.all(16.0),
-                                                  alignment: Alignment.center,
-                                                  child: Text(
-                                                    S.of(context).edit,
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ))),
-                                          GridColumn(
-                                              columnName: "delete",
-                                              maximumWidth: 150,
-                                              label: Container(
-                                                  padding: EdgeInsets.all(16.0),
-                                                  alignment: Alignment.center,
-                                                  child: Text(
-                                                    S.of(context).delete,
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ))),
-                                        ]),
-                                  ))))
+                                              ))),
+                                      GridColumn(
+                                          columnName: "delete",
+                                          maximumWidth: 150,
+                                          label: Container(
+                                              padding: EdgeInsets.all(16.0),
+                                              alignment: Alignment.center,
+                                              child: Text(
+                                                S.of(context).delete,
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ))),
+                                    ]),
+                              ))))
                 ]),
               )));
     });
   }
 
-  Future<void> showDialogMeneger() async {
+  Future<void> showDialogMeneger(BuildContext context) async {
     TextEditingController _nameController = TextEditingController();
     String _id = '';
     if (_object != null) {
