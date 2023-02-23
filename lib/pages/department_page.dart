@@ -9,6 +9,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
+import '../generated/l10n.dart';
 import '../models/Department.dart';
 import '../widgets/dskappbar.dart';
 
@@ -185,7 +186,7 @@ class _DepartmentPageState extends State<DepartmentPage> {
                                             // width: MediaQuery.of(context).size.width/2,
                                             label: Center(
                                               child: Text(
-                                                "Наименование",
+                                                S.of(context).name,
                                                 style: TextStyle(
                                                     fontSize: 15,
                                                     color: Colors.white,
@@ -201,7 +202,7 @@ class _DepartmentPageState extends State<DepartmentPage> {
                                                   padding: EdgeInsets.all(16.0),
                                                   alignment: Alignment.center,
                                                   child: Text(
-                                                    'Изменить',
+                                                    S.of(context).edit,
                                                     style: TextStyle(
                                                         color: Colors.white,
                                                         fontWeight:
@@ -214,7 +215,7 @@ class _DepartmentPageState extends State<DepartmentPage> {
                                                   padding: EdgeInsets.all(16.0),
                                                   alignment: Alignment.center,
                                                   child: Text(
-                                                    'Удалить',
+                                                    S.of(context).delete,
                                                     style: TextStyle(
                                                         color: Colors.white,
                                                         fontWeight:
@@ -244,7 +245,7 @@ class _DepartmentPageState extends State<DepartmentPage> {
       // false = user must tap button, true = tap outside dialog
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title: Text('Форма для добавление или изменение'),
+          title: Text(S.of(context).catalog_dialog_title),
           content: Container(
               width: MediaQuery.of(context).size.width / 3,
               height: MediaQuery.of(context).size.height / 3,
@@ -272,7 +273,7 @@ class _DepartmentPageState extends State<DepartmentPage> {
                           decoration: InputDecoration(
                               fillColor: Colors.white,
                               //Theme.of(context).backgroundColor,
-                              labelText: "Наименование",
+                              labelText: S.of(context).name,
                               enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
                                   borderSide: BorderSide(
@@ -301,10 +302,10 @@ class _DepartmentPageState extends State<DepartmentPage> {
                   Navigator.of(dialogContext).pop(); // Dismiss alert dialog
                 });
               },
-              child: Text('Сохранить'),
+              child: Text(S.of(context).save),
             ),
             TextButton(
-              child: Text('Отменить'),
+              child: Text(S.of(context).cancel),
               onPressed: () {
                 Navigator.of(dialogContext).pop(); // Dismiss alert dialog
               },
