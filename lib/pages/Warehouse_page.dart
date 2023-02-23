@@ -13,8 +13,8 @@ import '../generated/l10n.dart';
 import '../models/Department.dart';
 import '../widgets/dskappbar.dart';
 
-String? data;
 
+String? data;
 Controller _controller = Get.put(Controller());
 List<dynamic> _objects = [];
 dynamic _object;
