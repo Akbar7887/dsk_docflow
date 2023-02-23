@@ -6,6 +6,7 @@ import 'package:dsk_docflow/pages/order_page.dart';
 import 'package:dsk_docflow/pages/position_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 
@@ -44,12 +45,19 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       initialBinding: HomeBindings(),
+      unknownRoute: GetPage(name: '/notfound', page: () => Container()),
       getPages: [
-        GetPage(name: '/', page: () => WarehousePage(data: "department")),
-        GetPage(name: '/department', page: () => Home()),
-        GetPage(name: '/position', page: () =>  PositionPage()),
-        GetPage(name: '/warehouse', page: () =>  WarehousePage(data: "warehouse")),
-        // GetPage(name: "/order", page: () => OrderPage())
+        GetPage(
+            name: '/',
+            page: () => Home(),
+            title: "Департаменты"),
+        GetPage(name: '/department', page: () =>WarehousePage(data: "department")),
+        GetPage(name: '/position', page: () => WarehousePage(data: "position"), transition: Transition.zoom),
+        GetPage(
+            name: '/warehouse',
+            page: () => WarehousePage(data: "warehouse"),
+            title: "Склады"),
+        GetPage(name: "/order", page: () => OrderPage())
         // GetPage(name: '/kompleksdetails', page: () => KompleksDetailesPage()),
       ],
     );
