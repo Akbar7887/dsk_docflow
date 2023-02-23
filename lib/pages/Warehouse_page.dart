@@ -14,7 +14,7 @@ import '../models/Department.dart';
 import '../widgets/dskappbar.dart';
 
 class WarehousePage extends StatefulWidget {
-  WarehousePage({Key? key, required this.data}) : super(key: key);
+  WarehousePage( @required this.data) : super();
 
   String data;
 

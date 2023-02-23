@@ -1,13 +1,14 @@
+import 'package:dsk_docflow/controllers/Controller.dart';
 import 'package:dsk_docflow/models/UiC.dart';
 import 'package:dsk_docflow/pages/Warehouse_page.dart';
-import 'package:dsk_docflow/pages/department_page.dart';
 import 'package:dsk_docflow/pages/order_page.dart';
-import 'package:dsk_docflow/pages/position_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 // enum Menu { Department, Menegers, News, Vacansy }
 
+Controller _controller = Get.put(Controller());
 class DskAppBar extends StatelessWidget with PreferredSizeWidget {
   const DskAppBar({Key? key}) : super(key: key);
 
@@ -34,6 +35,14 @@ class DskAppBar extends StatelessWidget with PreferredSizeWidget {
         SizedBox(
           width: 20,
         ),
+        // Padding(
+        //     padding: EdgeInsets.only(right: 20.0),
+        //     child: GestureDetector(
+        //       onTap: () {
+        //         Get.toNamed('/department');
+        //       },
+        //       child: Icon(Icons.more_vert),
+        //     )),
         Container(
             alignment: Alignment.center,
             child: PopupMenuButton(
@@ -49,35 +58,33 @@ class DskAppBar extends StatelessWidget with PreferredSizeWidget {
                 },
                 itemBuilder: (BuildContext context) => [
                       PopupMenuItem(
-                          onTap: () {
-
-                            Get.to(() => DepartmentPage());
-                          },
+                        child: GestureDetector(
+                          onTap: () => Get.toNamed('/department'),
                           child: Text(
                             "Департаменты",
                             style: TextStyle(fontSize: 20),
-                          ),value: 0,),
+                          ),
+                        ),
+                        value: 0,
+                      ),
                       PopupMenuItem(
-                          onTap: () {
-                             // Get.off( WarehousePage(data: "department"));
-                            // Get.to(PositionPage());
-                            Get.toNamed("/position");
-                          },
-                          child: Text(
-                            "Должности",
-                            style: TextStyle(fontSize: 20),
-                          ),value: 1),
+                          child: GestureDetector(
+                        onTap: () => Get.toNamed('/position'),
+                        child: Text(
+                          "Должности",
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      )),
                       PopupMenuItem(
-                          onTap: () {
-                            // Get.offAll( WarehousePage(data: "department"));
-                            // Get.to(() => WarehousePage(data: "warehouse"));
-                            Get.toNamed("/warehouse");
-
-                          },
-                          child: Text(
-                            "Склады",
-                            style: TextStyle(fontSize: 20),
-                          ),value: 2),
+                        child: GestureDetector(
+                            onTap: () {
+                              Get.toNamed('/warehouse');
+                            },
+                            child: Text(
+                              "Склады",
+                              style: TextStyle(fontSize: 20),
+                            )),
+                      ),
                     ]))
       ],
 

@@ -8,6 +8,7 @@ import 'package:get/get_core/src/get_main.dart';
 
 import '../models/UiC.dart';
 import 'department_page.dart';
+import 'order_page.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -29,8 +30,11 @@ class _HomeState extends State<Home> {
           Container(
             child: ElevatedButton(
               onPressed: () {
-                Get.to(WarehousePage(data: "department"));
-                Navigator.pop(context);
+                // setState(() {
+                Get.to(() => WarehousePage("department"));
+                // });
+
+                // Navigator.pop(context);
               },
               child: Text("DEp"),
             ),
@@ -38,8 +42,10 @@ class _HomeState extends State<Home> {
           Container(
             child: ElevatedButton(
               onPressed: () {
-                Get.to(WarehousePage(data: "position"));
-                Navigator.pop(context);
+                // setState(() {
+                Get.to(WarehousePage("position"));
+                // });
+                // Navigator.pop(context);
               },
               child: Text("Pos"),
             ),
@@ -47,8 +53,10 @@ class _HomeState extends State<Home> {
           Container(
             child: ElevatedButton(
               onPressed: () {
-                Get.to(WarehousePage(data: "warehouse"));
-                Navigator.pop(context);
+                // setState(() {
+                Get.to(() => WarehousePage("warehouse"));
+                // });
+                // Navigator.pop(context);
               },
               child: Text("War"),
             ),
@@ -111,7 +119,11 @@ class _HomeState extends State<Home> {
                               ],
                             )),
                         onTap: () {
-                          Get.to(() => DepartmentPage());
+                          print("dep");
+                          setState(() {
+                            Get.toNamed("/department");
+                          });
+
                           Navigator.pop(context);
                         },
                       ),
@@ -139,7 +151,9 @@ class _HomeState extends State<Home> {
                               ],
                             )),
                         onTap: () {
-                          Get.to(() => PositionPage());
+                          setState(() {
+                            Get.to(WarehousePage("position"));
+                          });
 
                           Navigator.pop(context);
                         },
@@ -168,8 +182,10 @@ class _HomeState extends State<Home> {
                               ],
                             )),
                         onTap: () {
-                          Get.to(() => WarehousePage(data: "warehouse"));
-
+                          print("wer");
+                          setState(() {
+                            Get.to(() => WarehousePage("warehouse"));
+                          });
                           Navigator.pop(context);
                         },
                       ),
