@@ -1,5 +1,6 @@
 import 'package:dsk_docflow/controllers/ApiConnector.dart';
 import 'package:dsk_docflow/models/Department.dart';
+import 'package:dsk_docflow/models/Organization.dart';
 import 'package:dsk_docflow/models/Position.dart';
 import 'package:dsk_docflow/models/Warehouse.dart';
 import 'package:get/get.dart';
@@ -14,6 +15,8 @@ class Controller extends GetxController {
   var warehouses = <Warehouse>[].obs;
   Warehouse? warehouse;
   var page = 0.obs;
+  var organization = Organization().obs;
+
 
 
   @override
@@ -24,6 +27,18 @@ class Controller extends GetxController {
 
     super.onInit();
   }
+
+  fetchListOrganization() async {
+    final json = await api.getfirst("organization/get");
+    Organization loadedorg = Organization.fromJson(json);
+
+    if (loadedorg != null) {
+      organization.value = loadedorg;
+      // notifyChildrens();
+    }
+    update();
+  }
+
 
   fetchObjects(String data) async {
     final json = await api.getAll("${data}/get");

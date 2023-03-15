@@ -1,12 +1,14 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 import '../models/UiC.dart';
 
 
 
 class Api{
+  var _formatterToSend = new DateFormat('yyyy-MM-dd HH:mm:ss');
 
   Map<String, String> header = {
     'Content-Type': 'application/json',
@@ -57,6 +59,17 @@ class Api{
     } else {
       throw Exception("Error");
       return false;
+    }
+  }
+
+  Future<dynamic> getfirst(String url) async {
+    Uri uri = Uri.parse("${UiC.url}${url}");
+    final response = await http.get(uri, headers: header);
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return jsonDecode(utf8.decode(response.bodyBytes));
+    } else {
+      throw Exception("Error");
     }
   }
 }

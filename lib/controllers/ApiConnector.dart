@@ -19,5 +19,10 @@ class ApiConnector extends GetConnect {
     return await api.delete(url, id);
   }
 
+  Future<dynamic> getfirst(String url) async {
+    final json = await api.getfirst(url);
+
+    return json;
+  }
 
 }
