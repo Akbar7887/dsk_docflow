@@ -13,6 +13,8 @@ class Controller extends GetxController {
   Position? position;
   var warehouses = <Warehouse>[].obs;
   Warehouse? warehouse;
+  var page = 0.obs;
+
 
   @override
   onInit() {

@@ -1,3 +1,4 @@
+import 'package:dsk_docflow/widgets/dskAppBar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -8,9 +9,8 @@ class OrderPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: DskAppBar(), // extendBodyBehindAppBar: true,
-      body: Column(
+    return
+     Column(
         children: [
           SizedBox(
             height: 50,
@@ -19,7 +19,6 @@ class OrderPage extends StatelessWidget {
               width: 200,
               child: ElevatedButton(onPressed: () {}, child: Text("Добавить"))),
         ],
-      ),
-    );
+      );
   }
 }

@@ -22,12 +22,46 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "add": MessageLookupByLibrary.simpleMessage("Добавить"),
         "cancel": MessageLookupByLibrary.simpleMessage("Отмена"),
+        "catalog": MessageLookupByLibrary.simpleMessage("Справочник"),
         "catalog_dialog_title": MessageLookupByLibrary.simpleMessage(
             "Форма для добавление или изменение"),
+        "catalog_page_name": MessageLookupByLibrary.simpleMessage("Каталог"),
+        "characteristic": MessageLookupByLibrary.simpleMessage("Харак-ка"),
+        "characteristics":
+            MessageLookupByLibrary.simpleMessage("характеристики"),
+        "dashboard": MessageLookupByLibrary.simpleMessage("Dashboard"),
+        "date": MessageLookupByLibrary.simpleMessage("Дата"),
         "delete": MessageLookupByLibrary.simpleMessage("Удалить"),
+        "department": MessageLookupByLibrary.simpleMessage("Департамент"),
+        "description": MessageLookupByLibrary.simpleMessage("Описание"),
+        "doll": MessageLookupByLibrary.simpleMessage("Курс 1 долл США"),
         "edit": MessageLookupByLibrary.simpleMessage("Изменить"),
+        "error": MessageLookupByLibrary.simpleMessage("Ошибка"),
+        "exchange": MessageLookupByLibrary.simpleMessage("Курс валют"),
+        "form_dialog": MessageLookupByLibrary.simpleMessage(
+            "Форма для измениие или добавление!"),
+        "groups": MessageLookupByLibrary.simpleMessage("Группы"),
+        "image_store": MessageLookupByLibrary.simpleMessage("Картинки"),
+        "main": MessageLookupByLibrary.simpleMessage("Основное"),
         "name": MessageLookupByLibrary.simpleMessage("Наименование"),
-        "save": MessageLookupByLibrary.simpleMessage("Сохранить")
+        "organization": MessageLookupByLibrary.simpleMessage("Организация"),
+        "parent": MessageLookupByLibrary.simpleMessage("Родитель"),
+        "position": MessageLookupByLibrary.simpleMessage("Должность "),
+        "price": MessageLookupByLibrary.simpleMessage("Цены"),
+        "priceUE": MessageLookupByLibrary.simpleMessage("Цена в "),
+        "product": MessageLookupByLibrary.simpleMessage("Продукты"),
+        "product_page_name": MessageLookupByLibrary.simpleMessage("Продукты"),
+        "rate": MessageLookupByLibrary.simpleMessage("Валюта"),
+        "save": MessageLookupByLibrary.simpleMessage("Сохранить"),
+        "sum": MessageLookupByLibrary.simpleMessage("Сум"),
+        "validate":
+            MessageLookupByLibrary.simpleMessage("Просим заплнить поля"),
+        "valuename": MessageLookupByLibrary.simpleMessage("Значение"),
+        "valuerate": MessageLookupByLibrary.simpleMessage("Курс"),
+        "wanttoremove":
+            MessageLookupByLibrary.simpleMessage("Хотите удалить ?"),
+        "warehouse": MessageLookupByLibrary.simpleMessage("Склад")
       };
 }

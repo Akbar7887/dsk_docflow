@@ -48,10 +48,10 @@ class MyApp extends StatelessWidget {
       unknownRoute: GetPage(name: '/notfound', page: () => Container()),
       getPages: [
         GetPage(name: '/', page: () => Home()),
-        GetPage(name: '/department', page: () => WarehousePage("department")),
-        GetPage(name: '/position', page: () => WarehousePage("position")),
-        GetPage(name: '/warehouse', page: () => WarehousePage("warehouse")),
-        GetPage(name: "/order", page: () => OrderPage())
+        // GetPage(name: '/department', page: () => WarehousePage("department")),
+        // GetPage(name: '/position', page: () => WarehousePage("position")),
+        // GetPage(name: '/warehouse', page: () => WarehousePage("warehouse")),
+        // GetPage(name: "/order", page: () => OrderPage())
         // GetPage(name: '/kompleksdetails', page: () => KompleksDetailesPage()),
       ],
     );
