@@ -1,5 +1,7 @@
 import 'package:dsk_docflow/controllers/Controller.dart';
-import 'package:dsk_docflow/pages/Warehouse_page.dart';
+import 'package:dsk_docflow/pages/catalogs/Warehouse_page.dart';
+import 'package:dsk_docflow/pages/catalogs/personal_page.dart';
+import 'package:dsk_docflow/pages/organization_page.dart';
 import 'package:dsk_docflow/widgets/dskAppBar.dart';
 import 'package:dsk_docflow/widgets/dskDrawer.dart';
 import 'package:flutter/material.dart';
@@ -67,7 +69,7 @@ class _HomeState extends State<Home> {
     switch (_controller.page.value) {
       case 0:
         {
-          return OrderPage();
+          return OrganizationPage();
         }
         break;
       case 1:
@@ -85,6 +87,16 @@ class _HomeState extends State<Home> {
           return WarehousePage("position");
         }
         break;
+      case 4:
+        {
+          return PersonalPage();
+        }
+        break;
+      // case 5:
+      //   {
+      //     return OrderPage();
+      //   }
+      //   break;
       default:
         {
           return Container();
@@ -114,6 +126,16 @@ class _HomeState extends State<Home> {
           return S.of(context).position;
         }
         break;
+      case 4:
+        {
+          return S.of(context).personal;
+        }
+        break;
+      // case 5:
+      //   {
+      //     return S.of(context).order;
+      //   }
+      //   break;
       default:
         {
           return "";

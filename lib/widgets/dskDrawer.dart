@@ -88,6 +88,43 @@ class DskDrawer extends StatelessWidget {
                     _controller.page.value = 3;
                   },
                 ),
+                ListTile(
+                  contentPadding: EdgeInsets.only(left: 80.0, right: 0.0),
+                  title: Text(
+                    S.of(context).personal,
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  onTap: () {
+                    _controller.page.value = 4;
+                  },
+                ),
+              ],
+            ),
+            ExpansionTile(
+              collapsedIconColor: Colors.white,
+              controlAffinity: ListTileControlAffinity.platform,
+              leading: Icon(
+                Icons.view_agenda,
+                color: Colors.white,
+              ),
+              title: Text(
+                S.of(context).documents,
+                style: TextStyle(color: Colors.white),
+              ),
+              textColor: Colors.white,
+              children: [
+                ListTile(
+                  contentPadding: EdgeInsets.only(left: 80.0, right: 0.0),
+                  iconColor: Colors.white,
+                  title: Text(
+                    S.of(context).warehouse,
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  onTap: () {
+                    _controller.page.value = 4;
+                  },
+                ),
+
               ],
             ),
           ],

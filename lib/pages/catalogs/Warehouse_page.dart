@@ -7,8 +7,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-import '../generated/l10n.dart';
-import '../models/Department.dart';
+import '../../generated/l10n.dart';
+import '../../models/catalogs/Department.dart';
 
 String? data;
 Controller _controller = Get.put(Controller());

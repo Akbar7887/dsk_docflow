@@ -34,5 +34,8 @@
   "error": "Ошибка",
   "warehouse": "Склад",
   "department": "Департамент" ,
-  "position": "Должность "
+  "position": "Должность ",
+  "documents": "Документы",
+  "order": "Заказы",
+  "personal": "Персонал"
 }

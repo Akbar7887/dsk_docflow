@@ -1,5 +1,5 @@
 import 'package:dsk_docflow/models/UiC.dart';
-import 'package:dsk_docflow/pages/Warehouse_page.dart';
+import 'package:dsk_docflow/pages/catalogs/Warehouse_page.dart';
 
 import 'package:dsk_docflow/pages/home.dart';
 import 'package:dsk_docflow/pages/order_page.dart';

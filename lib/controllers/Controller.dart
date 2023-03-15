@@ -1,8 +1,9 @@
 import 'package:dsk_docflow/controllers/ApiConnector.dart';
-import 'package:dsk_docflow/models/Department.dart';
+import 'package:dsk_docflow/models/catalogs/Department.dart';
 import 'package:dsk_docflow/models/Organization.dart';
-import 'package:dsk_docflow/models/Position.dart';
-import 'package:dsk_docflow/models/Warehouse.dart';
+import 'package:dsk_docflow/models/catalogs/Personal.dart';
+import 'package:dsk_docflow/models/catalogs/Position.dart';
+import 'package:dsk_docflow/models/catalogs/Warehouse.dart';
 import 'package:get/get.dart';
 
 class Controller extends GetxController {
@@ -16,14 +17,15 @@ class Controller extends GetxController {
   Warehouse? warehouse;
   var page = 0.obs;
   var organization = Organization().obs;
-
-
+  var personals = <Personal>[].obs;
+  var personal = Personal().obs;
 
   @override
   onInit() {
     fetchObjects("department");
     fetchObjects("position");
     fetchObjects("warehouse");
+    fetchObjects("personal");
 
     super.onInit();
   }
@@ -39,21 +41,24 @@ class Controller extends GetxController {
     update();
   }
 
-
   fetchObjects(String data) async {
     final json = await api.getAll("${data}/get");
-    if (data ==  "department") {
+    if (data == "department") {
       List<Department> loadDepartment =
           json.map((e) => Department.fromJson(e)).toList();
       departments.value = loadDepartment;
-    } else if (data ==  "position") {
+    } else if (data == "position") {
       List<Position> loadPosition =
           json.map((e) => Position.fromJson(e)).toList();
       positions.value = loadPosition;
-    } else if (data ==  "warehouse") {
+    } else if (data == "warehouse") {
       List<Warehouse> loadWarehouse =
           json.map((e) => Warehouse.fromJson(e)).toList();
       warehouses.value = loadWarehouse;
+    } else if (data == "personal") {
+      List<Personal> loadpersonal =
+          json.map((e) => Personal.fromJson(e)).toList();
+      personals.value = loadpersonal;
     } else {
       objecterror.value = true;
     }

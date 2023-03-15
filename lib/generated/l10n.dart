@@ -409,6 +409,36 @@ class S {
       args: [],
     );
   }
+
+  /// `Документы`
+  String get documents {
+    return Intl.message(
+      'Документы',
+      name: 'documents',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Заказы`
+  String get order {
+    return Intl.message(
+      'Заказы',
+      name: 'order',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Персонал`
+  String get personal {
+    return Intl.message(
+      'Персонал',
+      name: 'personal',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
