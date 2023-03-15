@@ -17,8 +17,7 @@ import '../../models/catalogs/Personal.dart';
 
 String? data;
 Controller _controller = Get.find();
-List<Personal> _personals = [];
-Personal? _personal;
+
 late PersonalDataGridSource _personalDataGridSource;
 final _keyForm = GlobalKey<FormState>();
 
@@ -29,9 +28,9 @@ class PersonalPage extends StatelessWidget {
   Future<void> showDialogMeneger(BuildContext context) async {
     TextEditingController _nameController = TextEditingController();
     String _id = '';
-    if (_personal != null) {
-      _nameController.text = _personal!.name!;
-      _id = _personal!.id.toString();
+    if (_controller.personal.value != null) {
+      _nameController.text = _controller.personal.value.name!;
+      _id = _controller.personal.value.id.toString();
     } else {
       _id = '';
       _nameController.text = '';
@@ -89,11 +88,11 @@ class PersonalPage extends StatelessWidget {
                   return;
                 }
 
-                if (_personal == null) {
-                  _personal = Personal();
+                if (_controller.personal.value == null) {
+                  _controller.personal.value = Personal();
                 }
-                _personal!.name = _nameController.text;
-                _controller.changeObject("${data}/save", _personal).then((value) {
+                _controller.personal.value!.name = _nameController.text;
+                _controller.changeObject("${data}/save", _controller.personal.value).then((value) {
                   _controller.fetchObjects("personal");
                   Navigator.of(dialogContext).pop(); // Dismiss alert dialog
                 });
@@ -116,7 +115,7 @@ class PersonalPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      _personalDataGridSource = PersonalDataGridSource(_personals);
+      _personalDataGridSource = PersonalDataGridSource(_controller.personals.value);
 
       return SafeArea(
           child: Padding(
@@ -142,7 +141,7 @@ class PersonalPage extends StatelessWidget {
                   alignment: Alignment.topLeft,
                   child: ElevatedButton(
                       onPressed: () {
-                        _personal = null;
+                        _controller.personal = Personal().obs;
                         showDialogMeneger(context);
                       },
                       style: ButtonStyle(
@@ -190,7 +189,7 @@ class PersonalPage extends StatelessWidget {
                                 onCellTap: (cell) async {
                                   if (cell.rowColumnIndex.rowIndex > -1) {
                                     if (cell.rowColumnIndex.columnIndex == 2) {
-                                      _personal = _personals[
+                                      _controller.personal.value = _controller.personals.value[
                                       cell.rowColumnIndex.rowIndex - 1];
                                       showDialogMeneger(context);
                                     }
@@ -209,7 +208,7 @@ class PersonalPage extends StatelessWidget {
                                                   _controller
                                                       .deleteById(
                                                       "${data}/delete",
-                                                      _personals[cell
+                                                      _controller.personals.value[cell
                                                           .rowColumnIndex
                                                           .rowIndex -
                                                           1]

@@ -22,11 +22,12 @@ class Controller extends GetxController {
 
   @override
   onInit() {
+    fetchListOrganization();
+
     fetchObjects("department");
     fetchObjects("position");
     fetchObjects("warehouse");
     fetchObjects("personal");
-
     super.onInit();
   }
 

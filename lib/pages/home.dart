@@ -67,11 +67,11 @@ class _HomeState extends State<Home> {
 
   selectPage() {
     switch (_controller.page.value) {
-      case 0:
-        {
-          return OrganizationPage();
-        }
-        break;
+      // case 0:
+      //   {
+      //     return OrganizationPage();
+      //   }
+      //   break;
       case 1:
         {
           return WarehousePage("warehouse");
@@ -106,11 +106,11 @@ class _HomeState extends State<Home> {
 
   String selectPageName() {
     switch (_controller.page.value) {
-      case 0:
-        {
-          return S.of(context).organization;
-        }
-        break;
+      // case 0:
+      //   {
+      //     return S.of(context).organization;
+      //   }
+      //   break;
       case 1:
         {
           return S.of(context).warehouse;

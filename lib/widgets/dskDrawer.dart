@@ -30,20 +30,20 @@ class DskDrawer extends StatelessWidget {
             Divider(
               color: Colors.white,
             ),
-            ListTile(
-              iconColor: Colors.white,
-              leading: Icon(
-                Icons.home,
-                color: Colors.white,
-              ),
-              title: Text(
-                S.of(context).organization,
-                style: TextStyle(color: Colors.white),
-              ),
-              onTap: () {
-                _controller.page.value = 0;
-              },
-            ),
+            // ListTile(
+            //   iconColor: Colors.white,
+            //   leading: Icon(
+            //     Icons.home,
+            //     color: Colors.white,
+            //   ),
+            //   title: Text(
+            //     S.of(context).organization,
+            //     style: TextStyle(color: Colors.white),
+            //   ),
+            //   onTap: () {
+            //     _controller.page.value = 0;
+            //   },
+            // ),
             ExpansionTile(
               collapsedIconColor: Colors.white,
               controlAffinity: ListTileControlAffinity.platform,
