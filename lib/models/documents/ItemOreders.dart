@@ -1,4 +1,10 @@
 class ItemOreders {
+
+  int? id;
+  String? name;
+  double? quantity;
+
+
   ItemOreders({
       this.id, 
       this.name, 
@@ -9,9 +15,7 @@ class ItemOreders {
     name = json['name'];
     quantity = json['quantity'];
   }
-  int id;
-  String name;
-  double quantity;
+
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};

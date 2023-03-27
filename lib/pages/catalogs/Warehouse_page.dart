@@ -106,12 +106,12 @@ class WarehousePage extends GetView<Controller> {
                             gridLinesVisibility: GridLinesVisibility.both,
                             onCellTap: (cell) async {
                               if (cell.rowColumnIndex.rowIndex > -1) {
-                                if (cell.rowColumnIndex.columnIndex == 2) {
+                                if (cell.column.columnName != 'delete') {
                                   _object = _objects[
                                       cell.rowColumnIndex.rowIndex - 1];
                                   showDialogMeneger(context);
                                 }
-                                if (cell.rowColumnIndex.columnIndex == 3) {
+                                if (cell.column.columnName == 'delete') {
                                   await showDialog<void>(
                                     context: context,
                                     barrierDismissible: true,
@@ -179,18 +179,7 @@ class WarehousePage extends GetView<Controller> {
                                   ),
                                 ),
                               ),
-                              GridColumn(
-                                  columnName: "edit",
-                                  maximumWidth: 150,
-                                  label: Container(
-                                      padding: EdgeInsets.all(16.0),
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        S.of(context).edit,
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold),
-                                      ))),
+
                               GridColumn(
                                   columnName: "delete",
                                   maximumWidth: 150,
@@ -304,7 +293,6 @@ class ObjectDataGridSource extends DataGridSource {
               DataGridCell<int>(
                   columnName: 'id', value: objects.indexOf(e) + 1),
               DataGridCell<String>(columnName: 'name', value: e.name),
-              DataGridCell<Icon>(columnName: 'edit', value: Icon(Icons.edit)),
               DataGridCell<Icon>(
                   columnName: 'delete', value: Icon(Icons.delete)),
             ]))
@@ -329,14 +317,11 @@ class ObjectDataGridSource extends DataGridSource {
         padding: EdgeInsets.symmetric(horizontal: 16),
         child: Text(row.getCells()[1].value.toString()),
       ),
-      Container(
-          alignment: Alignment.center,
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          child: row.getCells()[2].value),
+
       Container(
         alignment: Alignment.center,
         padding: EdgeInsets.symmetric(horizontal: 16),
-        child: row.getCells()[3].value,
+        child: row.getCells()[2].value,
       ),
     ]);
   }
