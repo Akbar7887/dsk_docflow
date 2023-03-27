@@ -439,6 +439,26 @@ class S {
       args: [],
     );
   }
+
+  /// `№`
+  String get num {
+    return Intl.message(
+      '№',
+      name: 'num',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Номер`
+  String get id {
+    return Intl.message(
+      'Номер',
+      name: 'id',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -11,16 +11,17 @@ class Controller extends GetxController {
   final api = ApiConnector();
   var departments = <Department>[].obs;
   var objecterror = false.obs;
-  Department? department;
+  Rx<Department> department = Department().obs;
   var positions = <Position>[].obs;
-  Position? position;
+  Rx<Position> position = Position().obs;
   var warehouses = <Warehouse>[].obs;
-  Warehouse? warehouse;
+  Rx<Warehouse> warehouse = Warehouse().obs;
   var page = 0.obs;
   var organization = Organization().obs;
   var personals = <Personal>[].obs;
   var personal = Personal().obs;
   var ordergoods = <OrderGoods>[].obs;
+
 
   @override
   onInit() {

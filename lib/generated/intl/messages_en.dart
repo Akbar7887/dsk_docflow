@@ -44,9 +44,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "form_dialog": MessageLookupByLibrary.simpleMessage(
             "Форма для измениие или добавление!"),
         "groups": MessageLookupByLibrary.simpleMessage("Группы"),
+        "id": MessageLookupByLibrary.simpleMessage("Номер"),
         "image_store": MessageLookupByLibrary.simpleMessage("Картинки"),
         "main": MessageLookupByLibrary.simpleMessage("Основное"),
         "name": MessageLookupByLibrary.simpleMessage("Наименование"),
+        "num": MessageLookupByLibrary.simpleMessage("№"),
         "order": MessageLookupByLibrary.simpleMessage("Заказы"),
         "organization": MessageLookupByLibrary.simpleMessage("Организация"),
         "parent": MessageLookupByLibrary.simpleMessage("Родитель"),

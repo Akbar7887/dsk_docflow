@@ -25,11 +25,11 @@ class WarehousePage extends GetView<Controller> {
   @override
   Widget build(BuildContext context) {
     if (data == "warehouse") {
-      _objects = _controller.warehouses;
+      _objects = _controller.warehouses.value;
     } else if (data == "department") {
-      _objects = _controller.departments;
+      _objects = _controller.departments.value;
     } else if (data == "position") {
-      _objects = _controller.positions;
+      _objects = _controller.positions.value;
     }
 
     return Obx(() {

@@ -1,8 +1,6 @@
-import 'package:dsk_docflow/models/catalogs/Personal.dart';
 import 'package:dsk_docflow/models/documents/OrderGoods.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
@@ -76,11 +74,23 @@ class OrderPage extends StatelessWidget {
                                 onCellDoubleTap: ((cell) {}),
                                 columns: [
                                   GridColumn(
-                                      columnName: 'id',
+                                      columnName: 'num',
                                       width: 50,
                                       label: Center(
                                         child: Text(
-                                          "№",
+                                          S.of(context).num,
+                                          style: TextStyle(
+                                              fontSize: 15,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      )),
+                                  GridColumn(
+                                      columnName: 'id',
+                                      width: 100,
+                                      label: Center(
+                                        child: Text(
+                                          S.of(context).id,
                                           style: TextStyle(
                                               fontSize: 15,
                                               color: Colors.white,
@@ -149,12 +159,14 @@ class OrderDataGridSource extends DataGridSource {
     dataGridRows = ordergoods
         .map<DataGridRow>((e) => DataGridRow(cells: [
               DataGridCell<int>(
-                  columnName: 'id', value: ordergoods.indexOf(e) + 1),
+                  columnName: 'num', value: ordergoods.indexOf(e) + 1),
+              DataGridCell<String>(columnName: 'id', value: e.id.toString()),
               DataGridCell<String>(
                   columnName: 'datecreate',
                   value: _dateFormat.format(DateTime.parse(e.datecreate!))),
-      DataGridCell<String>(columnName: 'worker', value: e.worker!.name),
-      DataGridCell<String>(columnName: 'warehouse', value: e.warehouse!.name),
+              DataGridCell<String>(columnName: 'worker', value: e.worker!.name),
+              DataGridCell<String>(
+                  columnName: 'warehouse', value: e.warehouse!.name),
               DataGridCell<Icon>(
                   columnName: 'delete', value: Icon(Icons.delete)),
             ]))
@@ -175,7 +187,7 @@ class OrderDataGridSource extends DataGridSource {
         child: Text(row.getCells()[0].value.toString()),
       ),
       Container(
-        alignment: Alignment.centerLeft,
+        alignment: Alignment.center,
         padding: EdgeInsets.symmetric(horizontal: 16),
         child: Text(row.getCells()[1].value.toString()),
       ),
@@ -190,9 +202,14 @@ class OrderDataGridSource extends DataGridSource {
         child: Text(row.getCells()[3].value.toString()),
       ),
       Container(
+        alignment: Alignment.centerLeft,
+        padding: EdgeInsets.symmetric(horizontal: 16),
+        child: Text(row.getCells()[4].value.toString()),
+      ),
+      Container(
           alignment: Alignment.center,
           padding: EdgeInsets.symmetric(horizontal: 16),
-          child: row.getCells()[4].value),
+          child: row.getCells()[5].value),
     ]);
   }
 }
