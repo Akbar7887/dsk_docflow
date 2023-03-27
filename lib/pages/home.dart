@@ -9,7 +9,7 @@ import 'package:get/get.dart';
 
 import '../generated/l10n.dart';
 import '../widgets/header.dart';
-import 'order_page.dart';
+import 'documents/order_page.dart';
 
 final Controller _controller = Get.find();
 class Home extends StatefulWidget {
@@ -92,6 +92,11 @@ class _HomeState extends State<Home> {
           return PersonalPage();
         }
         break;
+      case 5:
+        {
+          return OrderPage();
+        }
+        break;
       // case 5:
       //   {
       //     return OrderPage();
@@ -129,6 +134,11 @@ class _HomeState extends State<Home> {
       case 4:
         {
           return S.of(context).personal;
+        }
+        break;
+      case 5:
+        {
+          return S.of(context).order;
         }
         break;
       // case 5:

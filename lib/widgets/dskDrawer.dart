@@ -117,11 +117,11 @@ class DskDrawer extends StatelessWidget {
                   contentPadding: EdgeInsets.only(left: 80.0, right: 0.0),
                   iconColor: Colors.white,
                   title: Text(
-                    S.of(context).warehouse,
+                    S.of(context).order,
                     style: TextStyle(color: Colors.white),
                   ),
                   onTap: () {
-                    _controller.page.value = 4;
+                    _controller.page.value = 5;
                   },
                 ),
 

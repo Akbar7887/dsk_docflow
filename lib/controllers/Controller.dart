@@ -4,6 +4,7 @@ import 'package:dsk_docflow/models/Organization.dart';
 import 'package:dsk_docflow/models/catalogs/Personal.dart';
 import 'package:dsk_docflow/models/catalogs/Position.dart';
 import 'package:dsk_docflow/models/catalogs/Warehouse.dart';
+import 'package:dsk_docflow/models/documents/OrderGoods.dart';
 import 'package:get/get.dart';
 
 class Controller extends GetxController {
@@ -19,6 +20,7 @@ class Controller extends GetxController {
   var organization = Organization().obs;
   var personals = <Personal>[].obs;
   var personal = Personal().obs;
+  var ordergoods = <OrderGoods>[].obs;
 
   @override
   onInit() {
@@ -28,6 +30,7 @@ class Controller extends GetxController {
     fetchObjects("position");
     fetchObjects("warehouse");
     fetchObjects("personal");
+    fetchObjects("ordergoods");
     super.onInit();
   }
 
@@ -60,6 +63,10 @@ class Controller extends GetxController {
       List<Personal> loadpersonal =
           json.map((e) => Personal.fromJson(e)).toList();
       personals.value = loadpersonal;
+    } else if (data == "ordergoods") {
+      List<OrderGoods> loadorder =
+      json.map((e) => OrderGoods.fromJson(e)).toList();
+      ordergoods.value = loadorder;
     } else {
       objecterror.value = true;
     }

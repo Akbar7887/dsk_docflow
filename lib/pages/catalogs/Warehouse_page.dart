@@ -43,19 +43,6 @@ class WarehousePage extends GetView<Controller> {
             height: 10,
           ),
           Container(
-            alignment: Alignment.center,
-            child: Text(
-              "${data}",
-              style: TextStyle(
-                  fontSize: 20,
-                  fontFamily: UiC.font,
-                  fontWeight: FontWeight.bold),
-            ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Container(
               alignment: Alignment.topLeft,
               child: ElevatedButton(
                   onPressed: () {
@@ -97,7 +84,6 @@ class WarehousePage extends GetView<Controller> {
                             // allowFiltering: true,
                             allowSorting: true,
                             allowEditing: true,
-
                             isScrollbarAlwaysShown: true,
                             headerRowHeight: UiC.datagrig_height,
                             onQueryRowHeight: (details) {
@@ -179,7 +165,6 @@ class WarehousePage extends GetView<Controller> {
                                   ),
                                 ),
                               ),
-
                               GridColumn(
                                   columnName: "delete",
                                   maximumWidth: 150,
@@ -317,7 +302,6 @@ class ObjectDataGridSource extends DataGridSource {
         padding: EdgeInsets.symmetric(horizontal: 16),
         child: Text(row.getCells()[1].value.toString()),
       ),
-
       Container(
         alignment: Alignment.center,
         padding: EdgeInsets.symmetric(horizontal: 16),

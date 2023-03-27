@@ -121,19 +121,7 @@ class PersonalPage extends StatelessWidget {
           child: Padding(
         padding: EdgeInsets.only(left: 20, right: 20),
         child: ListView(children: [
-          SizedBox(
-            height: 10,
-          ),
-          Container(
-            alignment: Alignment.center,
-            child: Text(
-              "${data}",
-              style: TextStyle(
-                  fontSize: 20,
-                  fontFamily: UiC.font,
-                  fontWeight: FontWeight.bold),
-            ),
-          ),
+
           SizedBox(
             height: 10,
           ),
