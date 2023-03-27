@@ -11,14 +11,20 @@ import '../../../generated/l10n.dart';
 import '../../../models/UiC.dart';
 import '../../../models/documents/OrderGoods.dart';
 
-late OrderItemDataGridSource _orderItemDataGridSource;
-final Controller _controller = Get.find();
-
 List<TextEditingController> _namecontrollers = [];
 List<TextEditingController> _quantitycontrollers = [];
+late List<ItemOreders> _itemorders;
 
-class OrderItem extends StatelessWidget {
+class OrderItem extends StatefulWidget {
   const OrderItem({Key? key}) : super(key: key);
+
+  @override
+  State<OrderItem> createState() => _OrderItemState();
+}
+
+class _OrderItemState extends State<OrderItem> {
+  late OrderItemDataGridSource _orderItemDataGridSource;
+  final Controller _controller = Get.find();
 
   getListControllers() {
     for (int i = 0; i < _controller.ordergood.value.itemOreders!.length; i++) {
@@ -36,8 +42,8 @@ class OrderItem extends StatelessWidget {
   Widget build(BuildContext context) {
     getListControllers();
 
-    _orderItemDataGridSource =
-        OrderItemDataGridSource(_controller.ordergood.value.itemOreders!);
+    _orderItemDataGridSource = OrderItemDataGridSource(
+        itemorders: _controller.ordergood.value.itemOreders!);
 
     return Column(
       children: [
@@ -47,7 +53,14 @@ class OrderItem extends StatelessWidget {
         Container(
             alignment: Alignment.topLeft,
             child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  ItemOreders _emptyItem = ItemOreders(name: "", quantity: 0);
+                  _controller.ordergood.value.itemOreders!.add(_emptyItem);
+
+                  setState(() {
+                    _orderItemDataGridSource.rows.add(DataGridRow(cells: []));
+                   });
+                },
                 style: ButtonStyle(
                     backgroundColor:
                         MaterialStateProperty.all(Colors.grey[800])),
@@ -57,7 +70,7 @@ class OrderItem extends StatelessWidget {
         ),
         Container(
             width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
+            height: MediaQuery.of(context).size.height / 2,
             decoration:
                 BoxDecoration(border: Border.all(color: Colors.blue.shade800)),
             child: Card(
@@ -71,7 +84,7 @@ class OrderItem extends StatelessWidget {
                           gridLineStrokeWidth: 1,
                           rowHoverTextStyle: TextStyle(
                             color: Colors.white,
-                            fontSize: 15,
+                            // fontSize: 10,
                           ),
                         ),
                         child: SfDataGrid(
@@ -81,6 +94,7 @@ class OrderItem extends StatelessWidget {
                               GridLinesVisibility.vertical,
                           columnWidthMode: ColumnWidthMode.fill,
                           isScrollbarAlwaysShown: true,
+                          shrinkWrapRows: true,
                           // allowFiltering: true,
                           allowSorting: true,
                           allowEditing: true,
@@ -146,18 +160,51 @@ class OrderItem extends StatelessWidget {
                                           fontWeight: FontWeight.bold),
                                     ))),
                           ],
-                        )))))
+                        ))))),
+        SizedBox(
+          height: 20,
+        ),
+        Container(
+          child: Row(
+            children: [
+              Container(
+                  alignment: Alignment.topLeft,
+                  child: ElevatedButton(
+                      onPressed: () {},
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.grey[800])),
+                      child: Text(S.of(context).save))),
+              SizedBox(
+                width: 50,
+              ),
+              Container(
+                  alignment: Alignment.topLeft,
+                  child: ElevatedButton(
+                      onPressed: () {},
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.grey[800])),
+                      child: Text(S.of(context).cancel))),
+            ],
+          ),
+        )
       ],
     );
   }
 }
 
 class OrderItemDataGridSource extends DataGridSource {
-  OrderItemDataGridSource(List<ItemOreders> itemorders) {
-    dataGridRows = itemorders
+  OrderItemDataGridSource({required List<ItemOreders> itemorders}) {
+    _itemorders = itemorders;
+    updateRows();
+  }
+
+  void updateRows() {
+    dataGridRows = _itemorders
         .map<DataGridRow>((e) => DataGridRow(cells: [
               DataGridCell<int>(
-                  columnName: 'num', value: itemorders.indexOf(e) + 1),
+                  columnName: 'num', value: _itemorders.indexOf(e) + 1),
               DataGridCell<String>(columnName: 'name', value: e.name!),
               DataGridCell<double>(columnName: 'quantity', value: e.quantity),
               DataGridCell<Icon>(
@@ -165,6 +212,23 @@ class OrderItemDataGridSource extends DataGridSource {
             ]))
         .toList();
   }
+
+  // void newRows() {
+  //   dataGridRows = _itemorders
+  //       .map<DataGridRow>((e) => DataGridRow(cells: [
+  //     DataGridCell<int>(
+  //         columnName: 'num', value: _itemorders.length),
+  //     DataGridCell<String>(columnName: 'name', value: ""),
+  //     DataGridCell<double>(columnName: 'quantity', value: 0),
+  //     DataGridCell<Icon>(
+  //         columnName: 'delete', value: Icon(Icons.delete)),
+  //   ]))
+  //       .toList();
+  // }
+  //
+  // void updateDataGridSource() {
+  //   notifyListeners();
+  // }
 
   late List<DataGridRow> dataGridRows;
 
