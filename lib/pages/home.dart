@@ -1,6 +1,7 @@
 import 'package:dsk_docflow/controllers/Controller.dart';
 import 'package:dsk_docflow/pages/catalogs/Warehouse_page.dart';
 import 'package:dsk_docflow/pages/catalogs/personal_page.dart';
+import 'package:dsk_docflow/pages/documents/orders/order_page.dart';
 import 'package:dsk_docflow/pages/organization_page.dart';
 import 'package:dsk_docflow/widgets/dskAppBar.dart';
 import 'package:dsk_docflow/widgets/dskDrawer.dart';
@@ -9,9 +10,10 @@ import 'package:get/get.dart';
 
 import '../generated/l10n.dart';
 import '../widgets/header.dart';
-import 'documents/order_page.dart';
+import 'documents/orders/orderlist_page.dart';
 
 final Controller _controller = Get.find();
+
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
 
@@ -22,13 +24,11 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   bool showDrawer = true;
 
-
   @override
   Widget build(BuildContext context) {
-
     return Obx(() => Scaffold(
         appBar: DskAppBar(), // extendBodyBehindAppBar: true,
-        body:  Container(
+        body: Container(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
           child: Row(
@@ -53,7 +53,6 @@ class _HomeState extends State<Home> {
                               },
                             ),
                             Header(selectPageName()),
-
                           ],
                         ),
                       ),
@@ -93,6 +92,11 @@ class _HomeState extends State<Home> {
         }
         break;
       case 5:
+        {
+          return OrderListPage();
+        }
+        break;
+      case 6:
         {
           return OrderPage();
         }
@@ -139,6 +143,11 @@ class _HomeState extends State<Home> {
       case 5:
         {
           return S.of(context).order;
+        }
+        break;
+      case 6:
+        {
+          return '${S.of(context).order} ${S.of(context).num}-${_controller.ordergood.value.id}';
         }
         break;
       // case 5:

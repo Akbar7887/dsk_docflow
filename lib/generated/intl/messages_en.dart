@@ -58,7 +58,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "priceUE": MessageLookupByLibrary.simpleMessage("Цена в "),
         "product": MessageLookupByLibrary.simpleMessage("Продукты"),
         "product_page_name": MessageLookupByLibrary.simpleMessage("Продукты"),
+        "quantity": MessageLookupByLibrary.simpleMessage("Количество"),
         "rate": MessageLookupByLibrary.simpleMessage("Валюта"),
+        "recievedate": MessageLookupByLibrary.simpleMessage("Дата получения"),
         "save": MessageLookupByLibrary.simpleMessage("Сохранить"),
         "sum": MessageLookupByLibrary.simpleMessage("Сум"),
         "validate":

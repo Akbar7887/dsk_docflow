@@ -21,6 +21,7 @@ class Controller extends GetxController {
   var personals = <Personal>[].obs;
   var personal = Personal().obs;
   var ordergoods = <OrderGoods>[].obs;
+  Rx<OrderGoods> ordergood = OrderGoods().obs;
 
 
   @override
@@ -80,6 +81,12 @@ class Controller extends GetxController {
       result = Department.fromJson(json);
     } else if (object is Position) {
       result = Position.fromJson(json);
+    } else if (object is Warehouse) {
+      result = Warehouse.fromJson(json);
+    } else if (object is Personal) {
+      result = Personal.fromJson(json);
+    } else if (object is OrderGoods) {
+      result = OrderGoods.fromJson(json);
     }
     return result;
   }

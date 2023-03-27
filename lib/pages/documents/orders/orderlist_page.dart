@@ -5,16 +5,15 @@ import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-import '../../controllers/Controller.dart';
-import '../../generated/l10n.dart';
-import '../../models/UiC.dart';
+import '../../../controllers/Controller.dart';
+import '../../../generated/l10n.dart';
+import '../../../models/UiC.dart';
 
 late OrderDataGridSource _orderDataGridSource;
 Controller _controller = Get.find();
-DateFormat _dateFormat = DateFormat("dd.mm.yyyy hh:mm:ss");
 
-class OrderPage extends StatelessWidget {
-  const OrderPage({Key? key}) : super(key: key);
+class OrderListPage extends GetView<Controller> {
+  const OrderListPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +70,12 @@ class OrderPage extends StatelessWidget {
                                   return UiC.datagrig_height;
                                 },
                                 headerRowHeight: UiC.datagrig_height,
-                                onCellDoubleTap: ((cell) {}),
+                                onCellDoubleTap: ((cell) {
+                                  _controller.ordergood.value = _controller
+                                      .ordergoods
+                                      .value[cell.rowColumnIndex.rowIndex - 1];
+                                  _controller.page.value = 6;
+                                }),
                                 columns: [
                                   GridColumn(
                                       columnName: 'num',
@@ -163,7 +167,7 @@ class OrderDataGridSource extends DataGridSource {
               DataGridCell<String>(columnName: 'id', value: e.id.toString()),
               DataGridCell<String>(
                   columnName: 'datecreate',
-                  value: _dateFormat.format(DateTime.parse(e.datecreate!))),
+                  value: UiC.dateFormat.format(DateTime.parse(e.datecreate!))),
               DataGridCell<String>(columnName: 'worker', value: e.worker!.name),
               DataGridCell<String>(
                   columnName: 'warehouse', value: e.warehouse!.name),

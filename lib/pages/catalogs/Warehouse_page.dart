@@ -11,7 +11,7 @@ import '../../generated/l10n.dart';
 import '../../models/catalogs/Department.dart';
 
 String? data;
-Controller _controller = Get.put(Controller());
+Controller _controller = Get.find();
 List<dynamic> _objects = [];
 dynamic _object;
 late ObjectDataGridSource _objectDataGridSource;
@@ -31,256 +31,283 @@ class WarehousePage extends GetView<Controller> {
     } else if (data == "position") {
       _objects = _controller.positions.value;
     }
+    _objectDataGridSource = ObjectDataGridSource(_objects);
 
-    return Obx(() {
-      _objectDataGridSource = ObjectDataGridSource(_objects);
-
-      return SafeArea(
-          child: Padding(
-        padding: EdgeInsets.only(left: 20, right: 20),
-        child: ListView(children: [
-          SizedBox(
-            height: 10,
-          ),
-          Container(
-              alignment: Alignment.topLeft,
-              child: ElevatedButton(
-                  onPressed: () {
-                    _object = null;
-                    showDialogMeneger(context);
-                  },
-                  style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all(Colors.grey[800])),
-                  child: Text("Добавить"))),
-          SizedBox(
-            height: 20,
-          ),
-          Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              decoration: BoxDecoration(
-                  border: Border.all(color: Colors.blue.shade800)),
-              child: Card(
-                  elevation: 5,
-                  child: Padding(
-                      padding: EdgeInsets.all(10),
-                      child: SfDataGridTheme(
-                        data: SfDataGridThemeData(
-                          headerColor: Colors.grey[700],
-                          rowHoverColor: Colors.grey,
-                          gridLineStrokeWidth: 1,
-                          rowHoverTextStyle: TextStyle(
-                            color: Colors.white,
-                            fontSize: 15,
+    return SafeArea(
+        child: Padding(
+          padding: EdgeInsets.only(left: 20, right: 20),
+          child: ListView(children: [
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+                alignment: Alignment.topLeft,
+                child: ElevatedButton(
+                    onPressed: () {
+                      _object = null;
+                      showDialogMeneger(context);
+                    },
+                    style: ButtonStyle(
+                        backgroundColor:
+                        MaterialStateProperty.all(Colors.grey[800])),
+                    child: Text("Добавить"))),
+            SizedBox(
+              height: 20,
+            ),
+            Container(
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width,
+                height: MediaQuery
+                    .of(context)
+                    .size
+                    .height,
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.blue.shade800)),
+                child: Card(
+                    elevation: 5,
+                    child: Padding(
+                        padding: EdgeInsets.all(10),
+                        child: SfDataGridTheme(
+                          data: SfDataGridThemeData(
+                            headerColor: Colors.grey[700],
+                            rowHoverColor: Colors.grey,
+                            gridLineStrokeWidth: 1,
+                            rowHoverTextStyle: TextStyle(
+                              color: Colors.white,
+                              fontSize: 15,
+                            ),
                           ),
-                        ),
-                        child: SfDataGrid(
-                            source: _objectDataGridSource,
-                            selectionMode: SelectionMode.single,
-                            headerGridLinesVisibility:
-                                GridLinesVisibility.vertical,
-                            columnWidthMode: ColumnWidthMode.fill,
-                            // allowFiltering: true,
-                            allowSorting: true,
-                            allowEditing: true,
-                            isScrollbarAlwaysShown: true,
-                            headerRowHeight: UiC.datagrig_height,
-                            onQueryRowHeight: (details) {
-                              return UiC.datagrig_height;
-                            },
-                            gridLinesVisibility: GridLinesVisibility.both,
-                            onCellTap: (cell) async {
-                              if (cell.rowColumnIndex.rowIndex > -1) {
-                                if (cell.column.columnName != 'delete') {
-                                  _object = _objects[
-                                      cell.rowColumnIndex.rowIndex - 1];
-                                  showDialogMeneger(context);
+                          child: SfDataGrid(
+                              source: _objectDataGridSource,
+                              selectionMode: SelectionMode.single,
+                              headerGridLinesVisibility:
+                              GridLinesVisibility.vertical,
+                              columnWidthMode: ColumnWidthMode.fill,
+                              // allowFiltering: true,
+                              allowSorting: true,
+                              allowEditing: true,
+                              isScrollbarAlwaysShown: true,
+                              headerRowHeight: UiC.datagrig_height,
+                              onQueryRowHeight: (details) {
+                                return UiC.datagrig_height;
+                              },
+                              gridLinesVisibility: GridLinesVisibility.both,
+                              onCellTap: (cell) async {
+                                if (cell.rowColumnIndex.rowIndex > -1) {
+                                  if (cell.column.columnName != 'delete') {
+                                    _object = _objects[
+                                    cell.rowColumnIndex.rowIndex - 1];
+                                    showDialogMeneger(context);
+                                  }
+                                  if (cell.column.columnName == 'delete') {
+                                    await showDialog<void>(
+                                      context: context,
+                                      barrierDismissible: true,
+                                      // false = user must tap button, true = tap outside dialog
+                                      builder: (BuildContext dialogContext) {
+                                        return AlertDialog(
+                                          content: Text('Хотите удалить ?'),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              child: Text('Да'),
+                                              onPressed: () {
+                                                _controller
+                                                    .deleteById(
+                                                    "${data}/delete",
+                                                    _objects[cell
+                                                        .rowColumnIndex
+                                                        .rowIndex -
+                                                        1]
+                                                        .id
+                                                        .toString())
+                                                    .then((value) {
+                                                  _controller.fetchObjects(
+                                                      data);
+                                                });
+                                                Navigator.of(dialogContext)
+                                                    .pop(); // Dismiss alert dialog
+                                              },
+                                            ),
+                                            TextButton(
+                                              child: Text('Нет'),
+                                              onPressed: () {
+                                                Navigator.of(dialogContext)
+                                                    .pop(); // Dismiss alert dialog
+                                              },
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  }
                                 }
-                                if (cell.column.columnName == 'delete') {
-                                  await showDialog<void>(
-                                    context: context,
-                                    barrierDismissible: true,
-                                    // false = user must tap button, true = tap outside dialog
-                                    builder: (BuildContext dialogContext) {
-                                      return AlertDialog(
-                                        content: Text('Хотите удалить ?'),
-                                        actions: <Widget>[
-                                          TextButton(
-                                            child: Text('Да'),
-                                            onPressed: () {
-                                              _controller
-                                                  .deleteById(
-                                                      "${data}/delete",
-                                                      _objects[cell
-                                                                  .rowColumnIndex
-                                                                  .rowIndex -
-                                                              1]
-                                                          .id
-                                                          .toString())
-                                                  .then((value) {
-                                                _controller.fetchObjects(data);
-                                              });
-                                              Navigator.of(dialogContext)
-                                                  .pop(); // Dismiss alert dialog
-                                            },
-                                          ),
-                                          TextButton(
-                                            child: Text('Нет'),
-                                            onPressed: () {
-                                              Navigator.of(dialogContext)
-                                                  .pop(); // Dismiss alert dialog
-                                            },
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  );
-                                }
-                              }
-                            },
-                            columns: [
-                              GridColumn(
-                                  columnName: 'id',
-                                  width: 50,
+                              },
+                              columns: [
+                                GridColumn(
+                                    columnName: 'id',
+                                    width: 50,
+                                    label: Center(
+                                      child: Text(
+                                        S
+                                            .of(context)
+                                            .num,
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    )),
+                                GridColumn(
+                                  columnName: 'name',
+                                  // width: MediaQuery.of(context).size.width/2,
                                   label: Center(
                                     child: Text(
-                                      "№",
+                                      S
+                                          .of(context)
+                                          .name,
                                       style: TextStyle(
                                           fontSize: 15,
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold),
                                     ),
-                                  )),
-                              GridColumn(
-                                columnName: 'name',
-                                // width: MediaQuery.of(context).size.width/2,
-                                label: Center(
-                                  child: Text(
-                                    S.of(context).name,
-                                    style: TextStyle(
-                                        fontSize: 15,
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold),
                                   ),
                                 ),
-                              ),
-                              GridColumn(
-                                  columnName: "delete",
-                                  maximumWidth: 150,
-                                  label: Container(
-                                      padding: EdgeInsets.all(16.0),
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        S.of(context).delete,
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold),
-                                      ))),
-                            ]),
-                      ))))
-        ]),
-      ));
-    });
+                                GridColumn(
+                                    columnName: "delete",
+                                    maximumWidth: 150,
+                                    label: Container(
+                                        padding: EdgeInsets.all(16.0),
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          S
+                                              .of(context)
+                                              .delete,
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold),
+                                        ))),
+                              ]),
+                        ))))
+          ]),
+        ));
+  }
+}
+
+Future<void> showDialogMeneger(BuildContext context) async {
+  TextEditingController _nameController = TextEditingController();
+  String _id = '';
+  if (_object != null) {
+    _nameController.text = _object!.name!;
+    _id = _object!.id.toString();
+  } else {
+    _id = '';
+    _nameController.text = '';
   }
 
-  Future<void> showDialogMeneger(BuildContext context) async {
-    TextEditingController _nameController = TextEditingController();
-    String _id = '';
-    if (_object != null) {
-      _nameController.text = _object!.name!;
-      _id = _object!.id.toString();
-    } else {
-      _id = '';
-      _nameController.text = '';
-    }
+  return await showDialog<void>(
+    context: context,
+    barrierDismissible: true,
+    // false = user must tap button, true = tap outside dialog
+    builder: (BuildContext dialogContext) {
+      return AlertDialog(
+        title: Text(S
+            .of(context)
+            .catalog_dialog_title),
+        content: Container(
+            width: MediaQuery
+                .of(context)
+                .size
+                .width / 3,
+            height: MediaQuery
+                .of(context)
+                .size
+                .height / 3,
+            child: Form(
+                key: _keyForm,
+                child: Column(
+                  children: [
+                    Container(
+                        alignment: Alignment.topLeft,
+                        child: Text('№ ${_id}')),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    TextFormField(
+                        controller: _nameController,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return S
+                                .of(context)
+                                .validate;
+                          }
+                        },
+                        style: GoogleFonts.openSans(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w200,
+                            color: Colors.black),
+                        decoration: InputDecoration(
+                            fillColor: Colors.white,
+                            //Theme.of(context).backgroundColor,
+                            labelText: S
+                                .of(context)
+                                .name,
+                            enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide(
+                                    width: 0.5, color: Colors.black)),
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide(
+                                    width: 0.5, color: Colors.black)))),
+                  ],
+                ))),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              if (!_keyForm.currentState!.validate()) {
+                return;
+              }
 
-    return await showDialog<void>(
-      context: context,
-      barrierDismissible: true,
-      // false = user must tap button, true = tap outside dialog
-      builder: (BuildContext dialogContext) {
-        return AlertDialog(
-          title: Text(S.of(context).catalog_dialog_title),
-          content: Container(
-              width: MediaQuery.of(context).size.width / 3,
-              height: MediaQuery.of(context).size.height / 3,
-              child: Form(
-                  key: _keyForm,
-                  child: Column(
-                    children: [
-                      Container(
-                          alignment: Alignment.topLeft,
-                          child: Text('№ ${_id}')),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      TextFormField(
-                          controller: _nameController,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return "Просим заплнить наименование";
-                            }
-                          },
-                          style: GoogleFonts.openSans(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w200,
-                              color: Colors.black),
-                          decoration: InputDecoration(
-                              fillColor: Colors.white,
-                              //Theme.of(context).backgroundColor,
-                              labelText: S.of(context).name,
-                              enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: BorderSide(
-                                      width: 0.5, color: Colors.black)),
-                              focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: BorderSide(
-                                      width: 0.5, color: Colors.black)))),
-                    ],
-                  ))),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                if (!_keyForm.currentState!.validate()) {
-                  return;
-                }
-
-                if (_object == null) {
-                  _object = Department();
-                }
-                _object!.name = _nameController.text;
-                _controller.changeObject("${data}/save", _object).then((value) {
-                  _controller.fetchObjects(data);
-                  Navigator.of(dialogContext).pop(); // Dismiss alert dialog
-                });
-              },
-              child: Text(S.of(context).save),
-            ),
-            TextButton(
-              child: Text(S.of(context).cancel),
-              onPressed: () {
+              if (_object == null) {
+                _object = Department();
+              }
+              _object!.name = _nameController.text;
+              _controller.changeObject("${data}/save", _object).then((value) {
+                _controller.fetchObjects(data!);
                 Navigator.of(dialogContext).pop(); // Dismiss alert dialog
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
+              });
+            },
+            child: Text(S
+                .of(context)
+                .save),
+          ),
+          TextButton(
+            child: Text(S
+                .of(context)
+                .cancel),
+            onPressed: () {
+              Navigator.of(dialogContext).pop(); // Dismiss alert dialog
+            },
+          ),
+        ],
+      );
+    },
+  );
 }
 
 class ObjectDataGridSource extends DataGridSource {
   ObjectDataGridSource(List<dynamic> objects) {
     dataGridRows = objects
-        .map<DataGridRow>((e) => DataGridRow(cells: [
-              DataGridCell<int>(
-                  columnName: 'id', value: objects.indexOf(e) + 1),
-              DataGridCell<String>(columnName: 'name', value: e.name),
-              DataGridCell<Icon>(
-                  columnName: 'delete', value: Icon(Icons.delete)),
-            ]))
+        .map<DataGridRow>((e) =>
+        DataGridRow(cells: [
+          DataGridCell<int>(
+              columnName: 'id', value: objects.indexOf(e) + 1),
+          DataGridCell<String>(columnName: 'name', value: e.name),
+          DataGridCell<Icon>(
+              columnName: 'delete', value: Icon(Icons.delete)),
+        ]))
         .toList();
   }
 

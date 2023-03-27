@@ -459,6 +459,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Дата получения`
+  String get recievedate {
+    return Intl.message(
+      'Дата получения',
+      name: 'recievedate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Количество`
+  String get quantity {
+    return Intl.message(
+      'Количество',
+      name: 'quantity',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
