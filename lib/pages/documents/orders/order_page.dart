@@ -123,20 +123,7 @@ class _OrderPageState extends State<OrderPage> {
                           ))),
                 ],
               )),
-              SizedBox(
-                height: 20,
-              ),
-              Container(
-                  alignment: Alignment.topLeft,
-                  child: ElevatedButton(
-                      onPressed: () {},
-                      style: ButtonStyle(
-                          backgroundColor:
-                          MaterialStateProperty.all(Colors.grey[800])),
-                      child: Text("Добавить"))),
-              SizedBox(
-                height: 20,
-              ),
+
               OrderItem()
 
             ])));

@@ -14,105 +14,141 @@ import '../../../models/documents/OrderGoods.dart';
 late OrderItemDataGridSource _orderItemDataGridSource;
 final Controller _controller = Get.find();
 
+List<TextEditingController> _namecontrollers = [];
+List<TextEditingController> _quantitycontrollers = [];
+
 class OrderItem extends StatelessWidget {
   const OrderItem({Key? key}) : super(key: key);
 
+  getListControllers() {
+    for (int i = 0; i < _controller.ordergood.value.itemOreders!.length; i++) {
+      _namecontrollers.add(TextEditingController(
+          text: _controller.ordergood.value.itemOreders![i].name));
+    }
+    for (int i = 0; i < _controller.ordergood.value.itemOreders!.length; i++) {
+      _quantitycontrollers.add(TextEditingController(
+          text:
+              _controller.ordergood.value.itemOreders![i].quantity.toString()));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    getListControllers();
+
     _orderItemDataGridSource =
         OrderItemDataGridSource(_controller.ordergood.value.itemOreders!);
 
-    return Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        decoration:
-            BoxDecoration(border: Border.all(color: Colors.blue.shade800)),
-        child: Card(
-            elevation: 5,
-            child: Padding(
-                padding: EdgeInsets.all(10),
-                child: SfDataGridTheme(
-                    data: SfDataGridThemeData(
-                      headerColor: Colors.grey[700],
-                      rowHoverColor: Colors.grey,
-                      gridLineStrokeWidth: 1,
-                      rowHoverTextStyle: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                      ),
-                    ),
-                    child: SfDataGrid(
-                      source: _orderItemDataGridSource,
-                      selectionMode: SelectionMode.single,
-                      headerGridLinesVisibility: GridLinesVisibility.vertical,
-                      columnWidthMode: ColumnWidthMode.fill,
-                      isScrollbarAlwaysShown: true,
-                      // allowFiltering: true,
-                      allowSorting: true,
-                      allowEditing: true,
-                      gridLinesVisibility: GridLinesVisibility.both,
-                      onQueryRowHeight: (details) {
-                        return UiC.datagrig_height;
-                      },
-                      headerRowHeight: UiC.datagrig_height,
-                      onCellDoubleTap: ((cell) {
-                        _controller.ordergood.value = _controller
-                            .ordergoods.value[cell.rowColumnIndex.rowIndex - 1];
-                        _controller.page.value = 6;
-                      }),
-                      columns: [
-                        GridColumn(
-                            columnName: 'num',
-                            width: 50,
-                            label: Center(
-                              child: Text(
-                                S.of(context).num,
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            )),
-                        GridColumn(
-                          columnName: 'name',
-                          // width: MediaQuery.of(context).size.width/2,
-                          label: Center(
-                            child: Text(
-                              S.of(context).name,
-                              style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                            ),
+    return Column(
+      children: [
+        SizedBox(
+          height: 20,
+        ),
+        Container(
+            alignment: Alignment.topLeft,
+            child: ElevatedButton(
+                onPressed: () {},
+                style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all(Colors.grey[800])),
+                child: Text(S.of(context).add))),
+        SizedBox(
+          height: 20,
+        ),
+        Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            decoration:
+                BoxDecoration(border: Border.all(color: Colors.blue.shade800)),
+            child: Card(
+                elevation: 5,
+                child: Padding(
+                    padding: EdgeInsets.all(10),
+                    child: SfDataGridTheme(
+                        data: SfDataGridThemeData(
+                          headerColor: Colors.grey[700],
+                          rowHoverColor: Colors.grey,
+                          gridLineStrokeWidth: 1,
+                          rowHoverTextStyle: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
                           ),
                         ),
-                        GridColumn(
-                          columnName: 'quantity',
-                          // width: MediaQuery.of(context).size.width/2,
-                          label: Center(
-                            child: Text(
-                              S.of(context).quantity,
-                              style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        ),
-                        GridColumn(
-                            columnName: "delete",
-                            maximumWidth: 150,
-                            label: Container(
-                                padding: EdgeInsets.all(16.0),
-                                alignment: Alignment.center,
+                        child: SfDataGrid(
+                          source: _orderItemDataGridSource,
+                          selectionMode: SelectionMode.single,
+                          headerGridLinesVisibility:
+                              GridLinesVisibility.vertical,
+                          columnWidthMode: ColumnWidthMode.fill,
+                          isScrollbarAlwaysShown: true,
+                          // allowFiltering: true,
+                          allowSorting: true,
+                          allowEditing: true,
+                          gridLinesVisibility: GridLinesVisibility.both,
+                          onQueryRowHeight: (details) {
+                            return UiC.datagrig_height;
+                          },
+                          headerRowHeight: UiC.datagrig_height,
+                          onCellDoubleTap: ((cell) {
+                            _controller.ordergood.value = _controller.ordergoods
+                                .value[cell.rowColumnIndex.rowIndex - 1];
+                            _controller.page.value = 6;
+                          }),
+                          columns: [
+                            GridColumn(
+                                columnName: 'num',
+                                width: 50,
+                                label: Center(
+                                  child: Text(
+                                    S.of(context).num,
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                )),
+                            GridColumn(
+                              columnName: 'name',
+                              // width: MediaQuery.of(context).size.width/2,
+                              label: Center(
                                 child: Text(
-                                  S.of(context).delete,
+                                  S.of(context).name,
                                   style: TextStyle(
+                                      fontSize: 15,
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold),
-                                ))),
-                      ],
-                    )))));
+                                ),
+                              ),
+                            ),
+                            GridColumn(
+                              columnName: 'quantity',
+                              // width: MediaQuery.of(context).size.width/2,
+                              label: Center(
+                                child: Text(
+                                  S.of(context).quantity,
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ),
+                            GridColumn(
+                                columnName: "delete",
+                                maximumWidth: 150,
+                                label: Container(
+                                    padding: EdgeInsets.all(16.0),
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      S.of(context).delete,
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold),
+                                    ))),
+                          ],
+                        )))))
+      ],
+    );
   }
 }
 
@@ -144,14 +180,32 @@ class OrderItemDataGridSource extends DataGridSource {
         child: Text(row.getCells()[0].value.toString()),
       ),
       Container(
-        alignment: Alignment.center,
-        padding: EdgeInsets.symmetric(horizontal: 16),
-        child: Text(row.getCells()[1].value.toString()),
+        // alignment: Alignment.center,
+        // padding: EdgeInsets.symmetric(horizontal: 16),
+        child: TextFormField(
+          // textAlign: TextAlign.start,
+          textAlignVertical: TextAlignVertical.center,
+          controller: _namecontrollers[rows.indexOf(row)],
+          decoration: InputDecoration(
+              isCollapsed: true,
+              // isDense: true,
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.all(10)),
+        ),
       ),
       Container(
-        alignment: Alignment.centerLeft,
-        padding: EdgeInsets.symmetric(horizontal: 16),
-        child: Text(row.getCells()[2].value.toString()),
+        // alignment: Alignment.center,
+        // padding: EdgeInsets.symmetric(horizontal: 16),
+        child: TextFormField(
+          // textAlign: TextAlign.start,
+          textAlignVertical: TextAlignVertical.center,
+          controller: _quantitycontrollers[rows.indexOf(row)],
+          decoration: InputDecoration(
+              isCollapsed: true,
+              // isDense: true,
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.all(10)),
+        ),
       ),
       Container(
           alignment: Alignment.center,
