@@ -26,7 +26,7 @@ class PersonalPage extends StatelessWidget {
   Future<void> showDialogMeneger(BuildContext context) async {
     TextEditingController _nameController = TextEditingController();
     String _id = '';
-    if (_controller.personal.value != null) {
+    if (_controller.personal.value.id != null) {
       _nameController.text = _controller.personal.value.name!;
       _id = _controller.personal.value.id.toString();
     } else {

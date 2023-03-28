@@ -2,6 +2,7 @@ import 'package:dsk_docflow/controllers/Controller.dart';
 import 'package:dsk_docflow/models/documents/ItemOrder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
@@ -123,9 +124,14 @@ class _OrderItemState extends State<OrderItem> {
                           },
                           headerRowHeight: UiC.datagrig_height,
                           onCellDoubleTap: ((cell) {
-                            _controller.ordergood.value = _controller.ordergoods
-                                .value[cell.rowColumnIndex.rowIndex - 1];
-                            _controller.page.value = 6;
+                            if (cell.column.columnName != 'delete') {
+                              _controller.ordergood.value = _controller
+                                  .ordergoods
+                                  .value[cell.rowColumnIndex.rowIndex - 1];
+                              _controller.page.value = 6;
+                            }else{
+
+                            }
                           }),
                           columns: [
                             GridColumn(
@@ -192,13 +198,14 @@ class _OrderItemState extends State<OrderItem> {
                       onPressed: () {
                         updateListControllers();
                         _controller
-                            .save("ordergoods/save",
-                                _controller.ordergood.value)
+                            .save(
+                                "ordergoods/save", _controller.ordergood.value)
                             .then((value) {
-                           _controller.ordergood.value = OrderGood.fromJson(value);
-                           _controller.ordergood.refresh();
-                           _controller.page.value = 5;
-                           _controller.page.refresh();
+                          _controller.ordergood.value =
+                              OrderGood.fromJson(value);
+                          _controller.ordergood.refresh();
+                          _controller.page.value = 5;
+                          _controller.page.refresh();
                         });
                       },
                       style: ButtonStyle(
@@ -278,6 +285,7 @@ class OrderItemDataGridSource extends DataGridSource {
         child: TextFormField(
           // textAlign: TextAlign.start,
           textAlignVertical: TextAlignVertical.center,
+
           controller: _namecontrollers[rows.indexOf(row)],
           decoration: InputDecoration(
               isCollapsed: true,
@@ -287,12 +295,14 @@ class OrderItemDataGridSource extends DataGridSource {
         ),
       ),
       Container(
-        // alignment: Alignment.center,
-        // padding: EdgeInsets.symmetric(horizontal: 16),
         child: TextFormField(
           // textAlign: TextAlign.start,
           textAlignVertical: TextAlignVertical.center,
           controller: _quantitycontrollers[rows.indexOf(row)],
+          keyboardType: TextInputType.number,
+          inputFormatters: <TextInputFormatter>[
+            FilteringTextInputFormatter.digitsOnly
+          ],
           decoration: InputDecoration(
               isCollapsed: true,
               // isDense: true,

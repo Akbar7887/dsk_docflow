@@ -73,17 +73,20 @@ class _HomeState extends State<Home> {
       //   break;
       case 1:
         {
-          return WarehousePage("warehouse");
+          _controller.nameobject.value = 'warehouse';
+          return WarehousePage();
         }
         break;
       case 2:
         {
-          return WarehousePage("department");
+          _controller.nameobject.value = 'department';
+          return WarehousePage();
         }
         break;
       case 3:
         {
-          return WarehousePage("position");
+          _controller.nameobject.value = 'position';
+          return WarehousePage();
         }
         break;
       case 4:

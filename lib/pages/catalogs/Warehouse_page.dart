@@ -10,7 +10,7 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import '../../generated/l10n.dart';
 import '../../models/catalogs/Department.dart';
 
-String? data;
+
 Controller _controller = Get.find();
 List<dynamic> _objects = [];
 dynamic _object;
@@ -18,17 +18,17 @@ late ObjectDataGridSource _objectDataGridSource;
 final _keyForm = GlobalKey<FormState>();
 
 class WarehousePage extends GetView<Controller> {
-  WarehousePage(@required this.data) : super();
+  WarehousePage() : super();
 
-  String data;
+
 
   @override
   Widget build(BuildContext context) {
-    if (data == "warehouse") {
+    if (_controller.nameobject.value == "warehouse") {
       _objects = _controller.warehouses.value;
-    } else if (data == "department") {
+    } else if (_controller.nameobject.value == "department") {
       _objects = _controller.departments.value;
-    } else if (data == "position") {
+    } else if (_controller.nameobject.value == "position") {
       _objects = _controller.positions.value;
     }
     _objectDataGridSource = ObjectDataGridSource(_objects);
@@ -115,7 +115,7 @@ class WarehousePage extends GetView<Controller> {
                                               onPressed: () {
                                                 _controller
                                                     .deleteById(
-                                                    "${data}/delete",
+                                                    "${_controller.nameobject.value}/delete",
                                                     _objects[cell
                                                         .rowColumnIndex
                                                         .rowIndex -
@@ -124,7 +124,7 @@ class WarehousePage extends GetView<Controller> {
                                                         .toString())
                                                     .then((value) {
                                                   _controller.fetchObjects(
-                                                      data);
+                                                      _controller.nameobject.value);
                                                 });
                                                 Navigator.of(dialogContext)
                                                     .pop(); // Dismiss alert dialog
@@ -274,8 +274,8 @@ Future<void> showDialogMeneger(BuildContext context) async {
                 _object = Department();
               }
               _object!.name = _nameController.text;
-              _controller.changeObject("${data}/save", _object).then((value) {
-                _controller.fetchObjects(data!);
+              _controller.changeObject("${_controller.nameobject.value}/save", _object).then((value) {
+                _controller.fetchObjects(_controller.nameobject.value);
                 Navigator.of(dialogContext).pop(); // Dismiss alert dialog
               });
             },

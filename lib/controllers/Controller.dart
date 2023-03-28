@@ -1,4 +1,5 @@
 import 'package:dsk_docflow/controllers/ApiConnector.dart';
+import 'package:dsk_docflow/generated/l10n.dart';
 import 'package:dsk_docflow/models/catalogs/Department.dart';
 import 'package:dsk_docflow/models/Organization.dart';
 import 'package:dsk_docflow/models/catalogs/Personal.dart';
@@ -9,6 +10,7 @@ import 'package:get/get.dart';
 
 class Controller extends GetxController {
   final api = ApiConnector();
+  Rx<String> nameobject = "".obs;
   var departments = <Department>[].obs;
   var objecterror = false.obs;
   Rx<Department> department = Department().obs;
@@ -21,6 +23,7 @@ class Controller extends GetxController {
   var personals = <Personal>[].obs;
   var personal = Personal().obs;
   var ordergoods = <OrderGood>[].obs;
+
   Rx<OrderGood> ordergood = OrderGood().obs;
 
 
