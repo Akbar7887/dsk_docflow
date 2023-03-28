@@ -91,6 +91,7 @@ class _HomeState extends State<Home> {
         break;
       case 4:
         {
+          _controller.nameobject.value = 'personal';
           return PersonalPage();
         }
         break;

@@ -1,9 +1,5 @@
-import 'dart:html';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
@@ -11,10 +7,8 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import '../../controllers/Controller.dart';
 import '../../generated/l10n.dart';
 import '../../models/UiC.dart';
-import '../../models/catalogs/Department.dart';
 import '../../models/catalogs/Personal.dart';
 
-String? data;
 Controller _controller = Get.find();
 
 late PersonalDataGridSource _personalDataGridSource;
@@ -91,7 +85,7 @@ class PersonalPage extends StatelessWidget {
                 }
                 _controller.personal.value!.name = _nameController.text;
                 _controller
-                    .changeObject("${data}/save", _controller.personal.value)
+                    .changeObject("${_controller.nameobject.value}/save", _controller.personal.value)
                     .then((value) {
                   _controller.fetchObjects("personal");
                   Navigator.of(dialogContext).pop(); // Dismiss alert dialog
@@ -194,7 +188,7 @@ class PersonalPage extends StatelessWidget {
                                             onPressed: () {
                                               _controller
                                                   .deleteById(
-                                                      "${data}/delete",
+                                                      "${_controller.nameobject.value}/delete",
                                                       _controller
                                                           .personals
                                                           .value[cell
