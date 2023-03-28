@@ -1,16 +1,16 @@
-class ItemOreders {
+class ItemOrder {
 
   int? id;
   String? name;
   double? quantity;
 
 
-  ItemOreders({
+  ItemOrder({
       this.id, 
       this.name, 
       this.quantity,});
 
-  ItemOreders.fromJson(dynamic json) {
+  ItemOrder.fromJson(dynamic json) {
     id = json['id'];
     name = json['name'];
     quantity = json['quantity'];

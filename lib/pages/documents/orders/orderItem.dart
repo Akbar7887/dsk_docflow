@@ -1,5 +1,5 @@
 import 'package:dsk_docflow/controllers/Controller.dart';
-import 'package:dsk_docflow/models/documents/ItemOreders.dart';
+import 'package:dsk_docflow/models/documents/ItemOrder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -9,11 +9,11 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../../generated/l10n.dart';
 import '../../../models/UiC.dart';
-import '../../../models/documents/OrderGoods.dart';
+import '../../../models/documents/OrderGood.dart';
 
 List<TextEditingController> _namecontrollers = [];
 List<TextEditingController> _quantitycontrollers = [];
-late List<ItemOreders> _itemorders;
+late List<ItemOrder> _itemorders;
 
 class OrderItem extends StatefulWidget {
   const OrderItem({Key? key}) : super(key: key);
@@ -27,24 +27,41 @@ class _OrderItemState extends State<OrderItem> {
   final Controller _controller = Get.find();
 
   getListControllers() {
-    for (int i = 0; i < _controller.ordergood.value.itemOreders!.length; i++) {
+    _namecontrollers = [];
+    _quantitycontrollers = [];
+    for (int i = 0; i < _controller.ordergood.value.itemOrders!.length; i++) {
       _namecontrollers.add(TextEditingController(
-          text: _controller.ordergood.value.itemOreders![i].name));
+          text: _controller.ordergood.value.itemOrders![i].name));
     }
-    for (int i = 0; i < _controller.ordergood.value.itemOreders!.length; i++) {
+    for (int i = 0; i < _controller.ordergood.value.itemOrders!.length; i++) {
       _quantitycontrollers.add(TextEditingController(
           text:
-              _controller.ordergood.value.itemOreders![i].quantity.toString()));
+              _controller.ordergood.value.itemOrders![i].quantity.toString()));
+    }
+  }
+
+  updateListControllers() {
+    for (int i = 0; i < _controller.ordergood.value.itemOrders!.length; i++) {
+      _controller.ordergood.value.itemOrders![i].name =
+          _namecontrollers[i].text;
+    }
+    for (int i = 0; i < _controller.ordergood.value.itemOrders!.length; i++) {
+      _controller.ordergood.value.itemOrders![i].quantity =
+          double.parse(_quantitycontrollers[i].text);
     }
   }
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    _orderItemDataGridSource = OrderItemDataGridSource(
+        itemorders: _controller.ordergood.value.itemOrders!);
     getListControllers();
 
-    _orderItemDataGridSource = OrderItemDataGridSource(
-        itemorders: _controller.ordergood.value.itemOreders!);
+    super.initState();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Column(
       children: [
         SizedBox(
@@ -54,12 +71,14 @@ class _OrderItemState extends State<OrderItem> {
             alignment: Alignment.topLeft,
             child: ElevatedButton(
                 onPressed: () {
-                  ItemOreders _emptyItem = ItemOreders(name: "", quantity: 0);
-                  _controller.ordergood.value.itemOreders!.add(_emptyItem);
-
                   setState(() {
-                    _orderItemDataGridSource.rows.add(DataGridRow(cells: []));
-                   });
+                    ItemOrder _emptyItem = ItemOrder(name: "", quantity: 0);
+                    _controller.ordergood.value.itemOrders!.add(_emptyItem);
+
+                    getListControllers();
+                    _orderItemDataGridSource.newRows(_emptyItem);
+                    // _orderItemDataGridSource.rows.add(DataGridRow(cells: []));
+                  });
                 },
                 style: ButtonStyle(
                     backgroundColor:
@@ -170,18 +189,32 @@ class _OrderItemState extends State<OrderItem> {
               Container(
                   alignment: Alignment.topLeft,
                   child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        updateListControllers();
+                        _controller
+                            .save("ordergoods/save",
+                                _controller.ordergood.value)
+                            .then((value) {
+                           _controller.ordergood.value = OrderGood.fromJson(value);
+                           _controller.ordergood.refresh();
+                           _controller.page.value = 5;
+                           _controller.page.refresh();
+                        });
+                      },
                       style: ButtonStyle(
                           backgroundColor:
                               MaterialStateProperty.all(Colors.grey[800])),
                       child: Text(S.of(context).save))),
               SizedBox(
-                width: 50,
+                width: 20,
               ),
               Container(
                   alignment: Alignment.topLeft,
                   child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        _controller.page.value = 5;
+                        _controller.page.refresh();
+                      },
                       style: ButtonStyle(
                           backgroundColor:
                               MaterialStateProperty.all(Colors.grey[800])),
@@ -195,7 +228,7 @@ class _OrderItemState extends State<OrderItem> {
 }
 
 class OrderItemDataGridSource extends DataGridSource {
-  OrderItemDataGridSource({required List<ItemOreders> itemorders}) {
+  OrderItemDataGridSource({required List<ItemOrder> itemorders}) {
     _itemorders = itemorders;
     updateRows();
   }
@@ -213,22 +246,18 @@ class OrderItemDataGridSource extends DataGridSource {
         .toList();
   }
 
-  // void newRows() {
-  //   dataGridRows = _itemorders
-  //       .map<DataGridRow>((e) => DataGridRow(cells: [
-  //     DataGridCell<int>(
-  //         columnName: 'num', value: _itemorders.length),
-  //     DataGridCell<String>(columnName: 'name', value: ""),
-  //     DataGridCell<double>(columnName: 'quantity', value: 0),
-  //     DataGridCell<Icon>(
-  //         columnName: 'delete', value: Icon(Icons.delete)),
-  //   ]))
-  //       .toList();
-  // }
-  //
-  // void updateDataGridSource() {
-  //   notifyListeners();
-  // }
+  void newRows(ItemOrder itemOreders) {
+    dataGridRows.add(DataGridRow(cells: [
+      DataGridCell<int>(columnName: 'num', value: 0),
+      DataGridCell<String>(columnName: 'name', value: ""),
+      DataGridCell<double>(columnName: 'quantity', value: 0),
+      DataGridCell<Icon>(columnName: 'delete', value: Icon(Icons.delete)),
+    ]));
+  }
+
+  void updateDataGridSource() {
+    notifyListeners();
+  }
 
   late List<DataGridRow> dataGridRows;
 

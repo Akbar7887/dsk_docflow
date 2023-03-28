@@ -1,4 +1,4 @@
-import 'package:dsk_docflow/models/documents/OrderGoods.dart';
+import 'package:dsk_docflow/models/documents/OrderGood.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -159,7 +159,7 @@ class OrderListPage extends GetView<Controller> {
 }
 
 class OrderDataGridSource extends DataGridSource {
-  OrderDataGridSource(List<OrderGoods> ordergoods) {
+  OrderDataGridSource(List<OrderGood> ordergoods) {
     dataGridRows = ordergoods
         .map<DataGridRow>((e) => DataGridRow(cells: [
               DataGridCell<int>(

@@ -4,7 +4,7 @@ import 'package:dsk_docflow/models/Organization.dart';
 import 'package:dsk_docflow/models/catalogs/Personal.dart';
 import 'package:dsk_docflow/models/catalogs/Position.dart';
 import 'package:dsk_docflow/models/catalogs/Warehouse.dart';
-import 'package:dsk_docflow/models/documents/OrderGoods.dart';
+import 'package:dsk_docflow/models/documents/OrderGood.dart';
 import 'package:get/get.dart';
 
 class Controller extends GetxController {
@@ -20,8 +20,8 @@ class Controller extends GetxController {
   var organization = Organization().obs;
   var personals = <Personal>[].obs;
   var personal = Personal().obs;
-  var ordergoods = <OrderGoods>[].obs;
-  Rx<OrderGoods> ordergood = OrderGoods().obs;
+  var ordergoods = <OrderGood>[].obs;
+  Rx<OrderGood> ordergood = OrderGood().obs;
 
 
   @override
@@ -66,15 +66,15 @@ class Controller extends GetxController {
           json.map((e) => Personal.fromJson(e)).toList();
       personals.value = loadpersonal;
     } else if (data == "ordergoods") {
-      List<OrderGoods> loadorder =
-      json.map((e) => OrderGoods.fromJson(e)).toList();
+      List<OrderGood> loadorder =
+      json.map((e) => OrderGood.fromJson(e)).toList();
       ordergoods.value = loadorder;
     } else {
       objecterror.value = true;
     }
   }
 
-  Future<dynamic?> changeObject(String url, dynamic object) async {
+  Future<dynamic> changeObject(String url, dynamic object) async {
     dynamic result;
     final json = await api.save(url, object);
     if (object is Department) {
@@ -85,10 +85,15 @@ class Controller extends GetxController {
       result = Warehouse.fromJson(json);
     } else if (object is Personal) {
       result = Personal.fromJson(json);
-    } else if (object is OrderGoods) {
-      result = OrderGoods.fromJson(json);
     }
+
     return result;
+  }
+
+  Future<dynamic> save(String url, dynamic object) async {
+    dynamic result;
+    final json = await api.save(url, object);
+    return json;
   }
 
   Future<bool> deleteById(url, id) async {
